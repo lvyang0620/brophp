@@ -12,6 +12,7 @@
 		<th>客户项目</th>
 		<th>创建时间</th>
 		<th>最后修改时间</th>
+		<th>变更记录</th>
 		<th>操作</th>
 	</tr>
 <form action="<{$url}>/del/bomcode/0" method="post" onsubmit="return confirm('确定要删除这些BOM吗？')">
@@ -19,7 +20,7 @@
 	<tr>
 		<td><input type="checkbox" name="id[]" value="<{$data[ls].bomcode}>"></td>
 		<td><{$data[ls].bomcode}></td>
-		<td><{$data[ls].bomname}></td>
+		<td><a href="<{$app}>/detailpart/index/bomcode/<{$data[ls].bomcode}>"><{$data[ls].bomname}></a></td>
 		<td><{$data[ls].description}></td>
 		<td><{$data[ls].projectname}></td>
 		<td>
@@ -35,6 +36,7 @@
 		<td><{$data[ls].customproject}></td>
 		<td><{$data[ls].ctime|date_format:"%Y-%m-%d %H:%M:%S"}></td>
 		<td><{$data[ls].lastmodtime|date_format:"%Y-%m-%d %H:%M:%S"}></td>
+		<td></td>
 		<td><a href="<{$url}>/mod/project_id/<{$pro_id}>/bomcode/<{$data[ls].bomcode}>">修改</a>/<a onclick="return confirm('确定要删除<{$data[ls].bomcode}>吗？')" href="<{$url}>/del/bomcode/<{$data[ls].bomcode}>/projectname/<{$data[ls].projectname}>">删除</a>/<a href="<{$app}>/detailpart/index/bomcode/<{$data[ls].bomcode}>">明细</a></td>
 		</tr>	
 	<{sectionelse}>
