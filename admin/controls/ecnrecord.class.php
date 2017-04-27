@@ -31,46 +31,39 @@
                 function add(){
 			//p($_GET);
 			$bom=D("bominfo");
-			$bominfo=$bom->field("bomcode,bomname")->find($_GET["bomcode"]);
+			$bominfo=$bom->field("bomcode,bomname,ecnrecord")->find($_GET["bomcode"]);
 			//p($bominfo);
 			$this->assign("bomcode",$bominfo["bomcode"]);
 			$this->assign("bomname",$bominfo["bomname"]);
+			$this->assign("ecnrectablename",$bominfo["ecnrecord"]);
 			
 			$this->display();
                 }
 		function insert(){
 			$bom=D("bominfo");
 
-			//p($_GET);
 			p($_POST);
-			//p($_POST["accounting"]);
-			if(isset($_POST["accounting"])){
-				$_POST["accounting"]=1;
-			}else{
-				$_POST["accounting"]=0;
-			}
-
-			//p($_POST["accounting"]);
 
 			if(isset($_POST["bomcode"])){
 				$bomcode=$_POST["bomcode"];
 			}elseif(isset($_GET["bomcode"])){
 				$bomcode=$_GET["bomcode"];
 			}
-			$bominfo=$bom->field("tablename")->find($bomcode);
-			$tablename=$bominfo["tablename"];
+			$bominfo=$bom->field("ecnrecord")->find($bomcode);
+			$ecnrectablename=$bominfo["ecnrecord"];
 			//p($tablename);
-			
+			$_POST["ecntime"]=time();			
+
 			$tab=D();
 		
-                        $sql='insert into '.$tablename.'(partcode,num,refs,substitute,accounting) values("'.$_POST["partcode"].'","'.$_POST["num"].'","'.$_POST["refs"].'","'.$_POST["substitute"].'","'.$_POST["accounting"].'");';
-			//p($sql);
+                        $sql='insert into '.$ecnrectablename.'(ecn_num,description,ecntime) values("'.$_POST["ecn_num"].'","'.$_POST["description"].'","'.$_POST["ecntime"].'");';
+			p($sql);
                         $result=$tab->query($sql,"insert");               //插入数据
 			//p($result);
 			if($result){
-				$this->success("添加物料进BOM成功！",3,"detailpart/index/bomcode/{$bomcode}");
+				$this->success("添加ECN 记录进成功！",3,"ecnrecord/index/bomcode/{$bomcode}");
 			}else{
-				$this->error($bom->getMsg(),3,"detailpart/add");
+				$this->error($tab->getMsg(),3,"ecnrecord/add");
 			}
 			
                 }

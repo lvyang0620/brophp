@@ -14,8 +14,8 @@
 		<td><{$data[ls].item}></td>
 		<td><{$data[ls].ecn_num}></td>
 		<td><{$data[ls].description}></td>
-		<td><{$data[ls].ecntime}></td>
-		<td><a href="<{$url}>/mod/bomcode/<{$bomcode}>/partcode/<{$data[ls].partcode}>">修改</a>/<a onclick="return confirm('确定要删除<{$data[ls].partname}>吗？')" href="<{$url}>/del/bomcode/<{$bomcode}>/partcode/<{$data[ls].partcode}>">删除</a></td>
+		<td><{$data[ls].ecntime|date_format:"%Y-%m-%d %H:%M:%S"}></td>
+		<td><a href="<{$url}>/mod/bomcode/<{$bomcode}>/ecn_item/<{$data[ls].item}>">修改</a>/<a onclick="return confirm('确定要删除<{$data[ls].ecn_num}>吗？')" href="<{$url}>/del/bomcode/<{$bomcode}>/ecn_item/<{$data[ls].item}>">删除</a></td>
 		</tr>	
 	<{sectionelse}>
 		<tr>
