@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<form>
+	<input name="name" type="notnull" msg="项目名称不能为空！" />
+	<input name="name" type="unique" action="add" msg="项目名称已存在！" />
+</form>

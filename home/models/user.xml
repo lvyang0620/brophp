@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<form>
+	<input name="name" type="notnull" action="both" msg="用户名不能为空" />
+	<input name="name" type="unique" action="add" msg="用户名已经存在" />
+	<input name="email" type="email" msg="不是正确的EMAIL格式！" />
+	<input name="age" type="number" msg="不是正确的数字格式！" />
+	<input name="age" type="in" value="0-150" msg="请输入正确的年龄" />
+	<input name="repassword" type="confirm" value="password" msg="两次输入的密码必须一致"/>
+</form>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<form>
+        <input name="name" type="notnull" msg="产品名称不能为空！" />
+        <input name="desn" type="notnull" msg="产品介绍不能为空！" />
+        <input name="price" type="currency" msg="产品价格录入格式不正确！" />
+        <input name="num" type="number" msg="产品数量录入格式不正确！" />
+        <input name="desn" type="notnull" msg="类别介绍不能为空！" />
+</form>

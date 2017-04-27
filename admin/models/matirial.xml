@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<form>
+        <input name="partcode" type="notnull" msg="物料编码不能为空！" />
+        <input name="partcode" type="unique" action="add" msg="物料编码已经存在！" />
+        <input name="partname" type="notnull" msg="物料型号不能为空" />
+        <input name="description" type="notnull" msg="物料描述不能为空" />
+        <input name="category_id" type="notnull" msg="请选择物料类别！" />
+        <input name="supplier_id" type="notnull" msg="请选择供应商，如果没有此供应商，请先添加该供应商！" />
+</form>

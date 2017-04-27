@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<form>
+	<input name="id" type="notnull" msg="类别ID不能为空！" />
+	<input name="id" type="unique" action="add" msg="类别ID已存在！" />
+	<input name="id" type="number" msg="类别ID必须为数字！" />
+	<input name="name" type="notnull" msg="类别名称不能为空！" />
+	<input name="name" type="unique" action="add" msg="类别名称已存在！" />
+	<input name="description" type="notnull" msg="类别介绍不能为空！" />
+	<input name="pid" type="notnull" msg="父类ID不能为空，没有父类填0！" />
+	<input name="pid" type="number" msg="父类ID必须为数字，没有父类填0！" />
+</form>

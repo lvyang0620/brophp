@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<form>
+	<input name="bomcode" type="notnull" msg="BOM编号不能为空！" />
+	<input name="bomcode" type="unique" action="add" msg="BOM编号已存在！" />
+</form>

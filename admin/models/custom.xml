@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<form>
+	<input name="name" type="notnull" msg="客户名不能为空！" />
+	<input name="shortname" type="notnull" msg="客户简称不能为空！" />
+	<input name="name" type="unique" action="add" msg="客户名已存在！" />
+	<input name="shortname" type="unique" action="add" msg="客户简称名已存在，请更换其他简称！" />
+</form>
