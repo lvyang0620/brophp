@@ -169,18 +169,18 @@
 			}else{
 				$bomcode=$_GET["bomcode"];
 			}
-			$bomitem=$bom->field("tablename")->find($bomcode);
-			$tablename=$bomitem["tablename"];
+			$bomitem=$bom->field("ecnrecord")->find($bomcode);
+			$tablename=$bomitem["ecnrecord"];
 			//p($tablename);
 			$tab=D();
-			$sql='delete from '.$tablename.' where partcode="'.$_GET["partcode"].'";';
+			$sql='delete from '.$tablename.' where item="'.$_GET["ecn_item"].'";';
 			//p($sql);
 			$result=$tab->query($sql,"delete");	
 			
 			if($result){
-				$this->success("删除器件项成功！",3,"detailpart/index/bomcode/{$bomcode}");
+				$this->success("删除ECN单成功！",3,"ecnrecord/index/bomcode/{$bomcode}");
 			}else{
-				$this->error("删除器件项失败！",3,"detailpart/index/bomcode/{$bomcode}");
+				$this->error("删除ECN单项失败！".$tab->getMsg(),3,"ecnrecord/index/bomcode/{$bomcode}");
 			}
 			
 			
