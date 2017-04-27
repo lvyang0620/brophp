@@ -66,7 +66,7 @@
 			$this->display();
                 }
 		function insert(){
-			p($_POST);
+			//p($_POST);
 
 			$bom=D("bominfo");
 
@@ -133,10 +133,10 @@
 			$this->display();
                 }
                 function update(){
-			p($_POST);	
+			//p($_POST);	
 			$bom=D("bominfo");
                         $old_data=$bom->field("bomcode,description,project_id,projectname,pcbtype,pcbversion,custom_id,customname,customproject")->find($_POST["bomcode"]);
-                        p($old_data);
+                        //p($old_data);
 			
 			if(!empty($_POST["bomcode"])){
 				$new_data["bomcode"]=$_POST["bomcode"];
@@ -172,15 +172,15 @@
 			}			
 			
 
-			p($new_data);
-                        p($_POST);
+			//p($new_data);
+                        //p($_POST);
 			
 			if($old_data==$new_data){
                                 $this->error("BOM信息相同，没有修改，请重新填写或放弃修改！",3,"bominfo/mod/bomcode/{$_POST["bomcode"]}");
 			}else{
                         	$old_tablename=$bom->field("tablename")->find($_POST["bomcode"]);
 				$oldtablename=$old_tablename["tablename"];
-				p($oldtablename);
+				//p($oldtablename);
 				if($bom->delBomTable($oldtablename)){				//删除旧的数据表
 					//p("删除数据表成功！");
 				}else{
@@ -191,7 +191,6 @@
 				$temptablename="bro_".$_POST["projectname"].$_POST["pcbtype"].$_POST["pcbversion"].$_POST["customshortname"].$_POST["customproject"]."_".date("YmdHis");
 				$tempbomname=$_POST["projectname"].$_POST["pcbtype"].$_POST["pcbversion"].$_POST["customshortname"].$_POST["customproject"]."_".date("YmdHis");
 				//p($temptablename);
-				p($temptablename);
 				if($bom->createBomTable($temptablename)){			//创建新数据表
 					$_POST["bomname"]=$tempbomname;
 					$_POST["tablename"]=$temptablename;

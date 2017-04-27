@@ -2,7 +2,7 @@
 <center><h2>修改BOM&nbsp;<{$data.bomname}>&nbsp;信息</h2></center>
 <form action="<{$url}>/update" method="post" >
 	BOM编号：<input type="text" name="bomcode" value="<{$data.bomcode}>"><br><br>
-	BOM描述：<input type="text" name="description" value="<{$data.description}>"><br><br>
+        BOM描述：<textarea cols="40" rows="5" name="description"><{$data.description}></textarea><br><br>
         项目名称：
                   <select name="project_id">
                         <option value="0">---请选择---</option>

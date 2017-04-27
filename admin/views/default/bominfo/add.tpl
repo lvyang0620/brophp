@@ -2,7 +2,7 @@
 <center><h2>添加新BOM</h2></center>
 <form action="<{$url}>/insert" method="post" >
 	BOM编号：<input type="text" name="bomcode"><br><br>
-	BOM描述：<input type="text" name="description"><br><br>
+	BOM描述：<textarea cols="40" rows="5" name="description"></textarea><br><br>
         项目名称：
                   <select name="project_id">
                         <option value="0">---请选择---</option>
