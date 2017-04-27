@@ -89,7 +89,7 @@
 			if($result){
 				$this->success("添加物料进BOM成功！",3,"detailpart/index/bomcode/{$bomcode}");
 			}else{
-				$this->error($bom->getMsg(),3,"detailpart/add");
+				$this->error($tab->getMsg(),3,"detailpart/add");
 			}
 			
                 }
