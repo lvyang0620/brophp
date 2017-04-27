@@ -36,7 +36,7 @@
 		<td><{$data[ls].customproject}></td>
 		<td><{$data[ls].ctime|date_format:"%Y-%m-%d %H:%M:%S"}></td>
 		<td><{$data[ls].lastmodtime|date_format:"%Y-%m-%d %H:%M:%S"}></td>
-		<td></td>
+		<td><a href="<{$app}>/ecnrecord/index/bomcode/<{$data[ls].bomcode}>"><{$data[ls].ecnrecord}></a></td>
 		<td><a href="<{$url}>/mod/project_id/<{$pro_id}>/bomcode/<{$data[ls].bomcode}>">修改</a>/<a onclick="return confirm('确定要删除<{$data[ls].bomcode}>吗？')" href="<{$url}>/del/bomcode/<{$data[ls].bomcode}>/projectname/<{$data[ls].projectname}>">删除</a>/<a href="<{$app}>/detailpart/index/bomcode/<{$data[ls].bomcode}>">明细</a></td>
 		</tr>	
 	<{sectionelse}>
