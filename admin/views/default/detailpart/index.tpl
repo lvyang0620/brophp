@@ -42,7 +42,7 @@
 		</tr>	
 	<{sectionelse}>
 		<tr>
-			<td colspan="9">这个类别中没有物料</td>
+			<td colspan="13">这个类别中没有物料</td>
 		</tr>
 	
 	<{/section}>
