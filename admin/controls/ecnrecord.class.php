@@ -43,7 +43,7 @@
 			$bom=D("bominfo");
 
 			p($_POST);
-
+			p($_REQUEST);
 			if(isset($_POST["bomcode"])){
 				$bomcode=$_POST["bomcode"];
 			}elseif(isset($_GET["bomcode"])){

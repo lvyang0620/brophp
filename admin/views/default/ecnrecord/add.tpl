@@ -1,6 +1,6 @@
 <p align="right"><a href="<{$url}>/index/bomcode/<{$bomcode}>">返回</a></p>
 <center><h2>往&nbsp;<{$bomname}>&nbsp;BOM添加ECN变更记录</h2></center>
-<form action="<{$url}>/insert/bomcode/<{$bomcode}>" method="post" >
+<form action="<{$url}>/insert/bomcode/<{$bomcode}>" method="post" onsubmit="return rowcount()" >
 	ECN单号：<input type="text" name="ecn_num"><br><br>
 	变更描述：<textarea cols="40" rows="5" name="description"></textarea><br><br>
 		<input type="hidden" name="bomcode" value="<{$bomcode}>">
@@ -45,6 +45,9 @@
 </form>
 
 <script type="text/javascript">
+function rowcount(){
+	return tb.rows.length;
+}
 function delrow(){
 var j=tb.rows.length;
 tb.deleteRow(j-1);
@@ -68,15 +71,15 @@ function addrow(){
 	var h11=x.insertCell(10);
 	var h12=x.insertCell(11);
 	h1.innerHTML="<div align=center>"+(i+1)+"</div>";
-	h2.innerHTML="<div align=center><input name=reason"+i+" type=text size=10></div>";
-	h3.innerHTML="<div align=center><input name=description"+i+" type=text ></div>";
-	h4.innerHTML="<div align=center><input name=act"+i+" type=text size=10></div>";
-	h5.innerHTML="<div align=center><input name=partcode"+i+" type=text size=10></div>";
-	h6.innerHTML="<div align=center><input name=newnum"+i+" type=text size=5></div>";
-	h7.innerHTML="<div align=center><input name=newrefs"+i+" type=text ></div>";
-	h8.innerHTML="<div align=center><input name=newsubstitute"+i+" type=text size=10></div>";
-	h9.innerHTML="<div align=center><input name=actiontype"+i+" type=text size=10></div>";
-	h10.innerHTML="<div align=center><input name=oldpartdealing"+i+" type=text size=10></div>";
+	h2.innerHTML="<div align=center><input name=reason"+(i+1)+" type=text size=10></div>";
+	h3.innerHTML="<div align=center><input name=description"+(i+1)+" type=text ></div>";
+	h4.innerHTML="<div align=center><input name=act"+(i+1)+" type=text size=10></div>";
+	h5.innerHTML="<div align=center><input name=partcode"+(i+1)+" type=text size=10></div>";
+	h6.innerHTML="<div align=center><input name=newnum"+(i+1)+" type=text size=5></div>";
+	h7.innerHTML="<div align=center><input name=newrefs"+(i+1)+" type=text ></div>";
+	h8.innerHTML="<div align=center><input name=newsubstitute"+(i+1)+" type=text size=10></div>";
+	h9.innerHTML="<div align=center><input name=actiontype"+(i+1)+" type=text size=10></div>";
+	h10.innerHTML="<div align=center><input name=oldpartdealing"+(i+1)+" type=text size=10></div>";
 	h11.innerHTML="<div align=center><input type=button name=additem value=添加 onclick=addrow() >&nbsp;<input type=button name=delitem value=删除 onclick=delrow() ></div>";
 	//i=i+1;
 	i=i+1;
