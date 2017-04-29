@@ -23,4 +23,11 @@
 			return $result;
 		}
 
+		function createEcnDetailTable($tablename){
+			$db=D();
+			$sql="create table {$tablename}(item int not null primary key,reason varchar(50),description varchar(250),act varchar(50),partcode char(20),new_num int,new_refs varchar(500),new_substitute char(20),action_type char(50),oldpart_dealing char(50)) engine=InnoDB character set utf8 collate utf8_general_ci;";
+			p($sql);
+			$result=$db->query($sql);
+			return $result;
+		}
 	}

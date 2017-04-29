@@ -5,11 +5,19 @@
 	变更描述：<textarea cols="40" rows="5" name="description"></textarea><br><br>
 		<input type="hidden" name="bomcode" value="<{$bomcode}>">
 		<input type="hidden" name="ecnrectablename" value="<{$ecnrectablename}>">
-	<input type="submit" name="sub" value="加入变更表">
+		<input type="hidden" id="count" name="count" >
+	<input type="submit" name="sub" value="加入变更表" >
 	
 <table align="center" width="100%" border="1" cellpadding="0" cellspacing="1" id="tb" >
 	<tbody>
 	<caption><h3>变更详细清单</h3></caption>
+	</tbody>
+	<tbody>
+		<tr>
+			<td colspan="8" ></td>	
+			<td colspan="1" align="center"><input type="button" name="additem" value="添加" onclick="addrow()" ></td>
+			<td colspan="1" align="center"><input type="button" name="delitem" value="删除" onclick="delrow()" ></td>
+		</tr>
 	</tbody>
 	<tbody>
 		<tr>
@@ -23,7 +31,6 @@
 			<th>新替代料</th>
 			<th>执行方式</th>
 			<th>旧料处理方式</th>
-			<th>操作</th>
 		</tr>
 	</tbody>
 	<tbody>
@@ -33,12 +40,11 @@
 			<td><div align="center" ><input type="text" name="description1" id="description1" ></div></td>
 			<td><div align="center" ><input type="text" name="act1" id="act1" size="10" ></div></td>
 			<td><div align="center" ><input type="text" name="partcode1" id="partcode1" size="10" ></div></td>
-			<td><div align="center" ><input type="text" name="newnum1" id="newnum1" size="5" ></div></td>
-			<td><div align="center" ><input type="text" name="newrefs1" id="newrefs1" ></div></td>
-			<td><div align="center" ><input type="text" name="newsubstitute1" id="newsubstitute1" size="10" ></div></td>
-			<td><div align="center" ><input type="text" name="actiontype1" id="actiontype1" size="10" ></div></td>
-			<td><div align="center" ><input type="text" name="oldpartdealing1" id="oldpartdealing1" size="10" ></div></td>
-			<td colspan="1" align="center"><input type="button" name="additem" value="添加" onclick="addrow()" >&nbsp;<input type="button" name="delitem" value="删除" onclick=delrow() ></td>
+			<td><div align="center" ><input type="text" name="new_num1" id="new_num1" size="5" ></div></td>
+			<td><div align="center" ><input type="text" name="new_refs1" id="new_refs1" ></div></td>
+			<td><div align="center" ><input type="text" name="new_substitute1" id="new_substitute1" size="10" ></div></td>
+			<td><div align="center" ><input type="text" name="action_type1" id="action_type1" size="10" ></div></td>
+			<td><div align="center" ><input type="text" name="oldpart_dealing1" id="oldpart_dealing1" size="10" ></div></td>
 		</tr>
 	</tbody>
 </table>
@@ -46,16 +52,19 @@
 
 <script type="text/javascript">
 function rowcount(){
-	return tb.rows.length;
+	var k=tb.rows.length-2;
+	document.getElementById("count").value = k;
 }
 function delrow(){
-var j=tb.rows.length;
-tb.deleteRow(j-1);
-i=i-1;
+	var j=tb.rows.length;
+	if(j>3){
+		tb.deleteRow(j-1);
+		i=i-1;
+	}
 //alert(i);
 }
 //var i=1;
-var i=1;
+var i=2;
 function addrow(){
     	var x=document.getElementById('tb').insertRow(i+1);
 	var h1=x.insertCell(0);
@@ -69,18 +78,16 @@ function addrow(){
 	var h9=x.insertCell(8);
 	var h10=x.insertCell(9);
 	var h11=x.insertCell(10);
-	var h12=x.insertCell(11);
-	h1.innerHTML="<div align=center>"+(i+1)+"</div>";
-	h2.innerHTML="<div align=center><input name=reason"+(i+1)+" type=text size=10></div>";
-	h3.innerHTML="<div align=center><input name=description"+(i+1)+" type=text ></div>";
-	h4.innerHTML="<div align=center><input name=act"+(i+1)+" type=text size=10></div>";
-	h5.innerHTML="<div align=center><input name=partcode"+(i+1)+" type=text size=10></div>";
-	h6.innerHTML="<div align=center><input name=newnum"+(i+1)+" type=text size=5></div>";
-	h7.innerHTML="<div align=center><input name=newrefs"+(i+1)+" type=text ></div>";
-	h8.innerHTML="<div align=center><input name=newsubstitute"+(i+1)+" type=text size=10></div>";
-	h9.innerHTML="<div align=center><input name=actiontype"+(i+1)+" type=text size=10></div>";
-	h10.innerHTML="<div align=center><input name=oldpartdealing"+(i+1)+" type=text size=10></div>";
-	h11.innerHTML="<div align=center><input type=button name=additem value=添加 onclick=addrow() >&nbsp;<input type=button name=delitem value=删除 onclick=delrow() ></div>";
+	h1.innerHTML="<div align=center>"+(i+0)+"</div>";
+	h2.innerHTML="<div align=center><input name=reason"+(i+0)+" type=text size=10></div>";
+	h3.innerHTML="<div align=center><input name=description"+(i+0)+" type=text ></div>";
+	h4.innerHTML="<div align=center><input name=act"+(i+0)+" type=text size=10></div>";
+	h5.innerHTML="<div align=center><input name=partcode"+(i+0)+" type=text size=10></div>";
+	h6.innerHTML="<div align=center><input name=new_num"+(i+0)+" type=text size=5></div>";
+	h7.innerHTML="<div align=center><input name=new_refs"+(i+0)+" type=text ></div>";
+	h8.innerHTML="<div align=center><input name=new_substitute"+(i+0)+" type=text size=10></div>";
+	h9.innerHTML="<div align=center><input name=action_type"+(i+0)+" type=text size=10></div>";
+	h10.innerHTML="<div align=center><input name=oldpart_dealing"+(i+0)+" type=text size=10></div>";
 	//i=i+1;
 	i=i+1;
 	//alert(i);

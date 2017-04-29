@@ -43,15 +43,72 @@
 			$bom=D("bominfo");
 
 			p($_POST);
-			p($_REQUEST);
 			if(isset($_POST["bomcode"])){
 				$bomcode=$_POST["bomcode"];
 			}elseif(isset($_GET["bomcode"])){
 				$bomcode=$_GET["bomcode"];
 			}
-			$bominfo=$bom->field("ecnrecord")->find($bomcode);
+			$bominfo=$bom->field("bomname,ecnrecord")->find($bomcode);
 			$ecnrectablename=$bominfo["ecnrecord"];
-			//p($tablename);
+			$bomname=$bominfo["bomname"];
+			//p($bomname);
+
+			//取得ECN明细表名
+			$ecn_detail_tablename="bro_ECN_DETAIL_".$_POST["ecn_num"]."_".$bomname;
+			p($ecn_detail_tablename);
+			//创建变更明细表
+                        if($bom->createEcnDetailTable($ecn_detail_tablename)){
+				p("创建变更明细表成功");
+                                $_POST["ecn_detail_tablename"]=$ecn_detail_tablename;
+				//执行插入变更明细表操作
+				for($i=1;$i<=$_POST["count"];$i++){
+					$item=$i;
+					if(isset($_POST["reason{$i}"])){
+						$reason=$_POST["reason{$i}"];
+					}
+					if(isset($_POST["description{$i}"])){
+						$description=$_POST["description{$i}"];
+					}
+					if(isset($_POST["act{$i}"])){
+						$act=$_POST["act{$i}"];
+					}
+					if(isset($_POST["partcode{$i}"])){
+						$partcode=$_POST["partcode{$i}"];
+					}
+					if(isset($_POST["new_num{$i}"])){
+						$new_num=$_POST["new_num{$i}"];
+					}
+					if(isset($_POST["new_refs{$i}"])){
+						$new_refs=$_POST["new_refs{$i}"];
+					}
+					if(isset($_POST["new_substitute{$i}"])){
+						$new_substitute=$_POST["new_substitute{$i}"];
+					}
+					if(isset($_POST["action_type{$i}"])){
+						$action_type=$_POST["action_type{$i}"];
+					}
+					if(isset($_POST["oldpart_dealing{$i}"])){
+						$oldpart_dealing=$_POST["oldpart_dealing{$i}"];
+					}
+					//插入变更明细表数据
+					$ecndetail=D();
+					$sql1='insert into '.$ecn_detail_tablename.'(item,reason,description,act,partcode,new_num,new_refs,new_substitute,action_type,oldpart_dealing) values("'.$item.'","'.$reason.'","'.$description.'","'.$act.'","'.$partcode.'","'.$new_num.'","'.$new_refs.'","'.$new_substitute.'","'.$action_type.'","'.$oldpart_dealing.'");';
+					p($sql1);
+					 $result1=$ecndetail->query($sql1,"insert");               //插入数据
+                        		//p($result);
+                        		if($result1){
+						p("插入ECN明细表 {$ecn_detail_tablename} 成功");
+                        		}else{
+                                		$this->error("插入ECN明细表 {$ecn_detail_tablename} 失败",3,"ecnrecord/add");
+                        		}
+				}
+                        }else{
+				p("创建ECN变更明细表失败！");
+                                $_POST["ecn_detail_tablename"]="";
+                                $this->error("创建ECN变更明细表失败！",3,"bominfo/add");
+                        }
+				
+
 			$_POST["ecntime"]=time();			
 
 			$tab=D();
@@ -178,7 +235,7 @@
 			$result=$tab->query($sql,"delete");	
 			
 			if($result){
-				$this->success("删除ECN单成功！",3,"ecnrecord/index/bomcode/{$bomcode}");
+				$this->success("删除ECN单成功！",1,"ecnrecord/index/bomcode/{$bomcode}");
 			}else{
 				$this->error("删除ECN单项失败！".$tab->getMsg(),3,"ecnrecord/index/bomcode/{$bomcode}");
 			}
