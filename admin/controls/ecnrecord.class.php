@@ -1,6 +1,7 @@
 <?php
         class Ecnrecord {
                 function index(){
+			p($_GET);
                         $bomcode=$_GET["bomcode"];
                         //p($bomcode);
                         $bom=D("bominfo");
@@ -19,12 +20,20 @@
                         $data=$tab->query($sql,"select");               //查询数据
                         //p($data);
 
-                        $this->assign("bomcode",$bomcode);                    //分配数据
-                        $this->assign("bomname",$bomname);                    //分配数据
-                        $this->assign("data",$data);                    //分配数据
-                        $this->assign("fpage",$page->fpage());
+                        	$this->assign("bomcode",$bomcode);                    //分配数据
+                        	$this->assign("bomname",$bomname);                    //分配数据
+                        	$this->assign("data",$data);                    //分配数据
+                        	$this->assign("fpage",$page->fpage());
+			if(isset($_GET["ecn_item"]) && isset($_GET["ecn_num"])){
+				
 
-                        $this->display();
+				$this->assign("ecn_num",$_GET["ecn_num"]);
+				//$this->redirect("index_detail");
+                        	$this->display("index_detail");
+
+			}else{
+                        	$this->display("index");
+			}
 
                 }
 		

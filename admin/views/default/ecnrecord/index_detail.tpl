@@ -31,3 +31,20 @@
 
 	</form>
 </table>
+
+<table align="center" width="100%" border="1" cellpadding="0" cellspacing="1">
+	<caption><h3><{$ecn_num}>&nbsp;变更单明细表</h3></caption>i
+		<tr>
+                        <th>ITEM</th>
+                        <th>更改原因</th>
+                        <th>更改描述</th>
+                        <th>动作</th>
+                        <th>物料编码</th>
+                        <th>新数量</th>
+                        <th>新位号列表</th>
+                        <th>新替代料</th>
+                        <th>执行方式</th>
+                        <th>旧料处理方式</th>
+		</tr>
+
+</table>
