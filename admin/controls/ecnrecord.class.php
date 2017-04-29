@@ -42,7 +42,7 @@
 		function insert(){
 			$bom=D("bominfo");
 
-			p($_POST);
+			//p($_POST);
 			if(isset($_POST["bomcode"])){
 				$bomcode=$_POST["bomcode"];
 			}elseif(isset($_GET["bomcode"])){
@@ -93,7 +93,7 @@
 					//插入变更明细表数据
 					$ecndetail=D();
 					$sql1='insert into '.$ecn_detail_tablename.'(item,reason,description,act,partcode,new_num,new_refs,new_substitute,action_type,oldpart_dealing) values("'.$item.'","'.$reason.'","'.$description.'","'.$act.'","'.$partcode.'","'.$new_num.'","'.$new_refs.'","'.$new_substitute.'","'.$action_type.'","'.$oldpart_dealing.'");';
-					p($sql1);
+					//p($sql1);
 					 $result1=$ecndetail->query($sql1,"insert");               //插入数据
                         		//p($result);
                         		if($result1){
@@ -114,7 +114,7 @@
 			$tab=D();
 		
                         $sql='insert into '.$ecnrectablename.'(ecn_num,description,ecntime) values("'.$_POST["ecn_num"].'","'.$_POST["description"].'","'.$_POST["ecntime"].'");';
-			p($sql);
+			//p($sql);
                         $result=$tab->query($sql,"insert");               //插入数据
 			//p($result);
 			if($result){
