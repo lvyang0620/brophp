@@ -100,12 +100,28 @@
 				$this->error("创建数据表失败！",3,"bominfo/add");
 			}
 			
+			$tempecnrectablename="bro_ECN".$tempbomname;
+			p($tempecnrectablename);
+			if($bom->createEcnRecTable($tempecnrectablename)){
+				$_POST["ecnrecord"]=$tempecnrectablename;
+			}else{
+				$_POST["ecnrecord"]="";
+				$this->error("创建ECN记录表失败！",3,"bominfo/add");
+			}
+					
+
+	
 			if($bom->insert()){
 				$this->success("添加新BOM成功！",3,"bominfo/index");
 			}else{
 				if(isset($_POST["tablename"])){
 					$bom->delBomTable($_POST["tablename"]);
 				}
+
+				if(isset($_POST["ecnrecord"])){
+					$bom->delBomTable($_POST["ecnrecord"]);
+				}
+
 				$this->error($bom->getMsg(),3,"bominfo/add");
 			}
                 }

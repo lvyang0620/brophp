@@ -7,6 +7,7 @@
 			return $result;
 		}
 
+		//删除表函数
 		function delBomTable($tablename){
 			$db=D();
 			$sql="drop table {$tablename};";
@@ -14,6 +15,19 @@
 			return $result;
 		}
 
+		function createEcnRecTable($tablename){
+			$db=D();
+			$sql="create table {$tablename}(item int not null primary key auto_increment,ecn_num varchar(50) not null unique,ecn_detail_tablename varchar(100) not null unique,description varchar(250),ecntime int not null) engine=InnoDB character set utf8 collate utf8_general_ci;";
+			p($sql);
+			$result=$db->query($sql);
+			return $result;
+		}
 
-
+		function createEcnDetailTable($tablename){
+			$db=D();
+			$sql="create table {$tablename}(item int not null primary key,reason varchar(50),description varchar(250),act varchar(50),partcode char(20),new_num int,new_refs varchar(500),new_substitute char(20),action_type char(50),oldpart_dealing char(50)) engine=InnoDB character set utf8 collate utf8_general_ci;";
+			p($sql);
+			$result=$db->query($sql);
+			return $result;
+		}
 	}

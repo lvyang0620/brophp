@@ -1,95 +1,138 @@
 <?php
-        class Detailpart {
+        class Ecnrecord {
                 function index(){
+			//p($_GET);
                         $bomcode=$_GET["bomcode"];
                         //p($bomcode);
                         $bom=D("bominfo");
 
-                        $bomitem=$bom->field("bomname,tablename")->find($bomcode);
-                        $tablename=$bomitem["tablename"];
+                        $bomitem=$bom->field("bomname,ecnrecord")->find($bomcode);
                         $bomname=$bomitem["bomname"];
+                        $ecnrectablename=$bomitem["ecnrecord"];
                         //p($tablename);
                         $tab=D();
-                        $sql="select count(1) from {$tablename};";
+                        $sql="select count(1) from {$ecnrectablename};";
                         $total=$tab->query($sql,"total");               //获取总数
                         //p($total);
                         $page=new Page($total,10);                      //创建分页
 
-                        $sql="select partcode,num,refs,substitute,accounting from {$tablename};";
+                        $sql="select item,ecn_num,ecn_detail_tablename,description,ecntime from {$ecnrectablename};";
                         $data=$tab->query($sql,"select");               //查询数据
                         //p($data);
 
-			$mat=D("matirial");
-			
-			$sum=0;						//初始化总成本
-			for($i=0;$i<count($data);$i++){			//查表获取BOM表中每个物料的信息
-				$info=$mat->field("partcode,partname,description,price,lossrate,supplier_name")
-					  ->where(array("partcode"=>$data[$i]["partcode"]))
-					  ->select();
-				//p($info[0]["partname"]);
-				$data[$i]["partname"]=$info[0]["partname"];	
-				$data[$i]["description"]=$info[0]["description"];	
-				$data[$i]["price"]=$info[0]["price"];	
-				$data[$i]["lossrate"]=$info[0]["lossrate"];	
-				$data[$i]["supplier_name"]=$info[0]["supplier_name"];	
-				$data[$i]["cost"]=$data[$i]["price"]*$data[$i]["num"]*(1+$data[$i]["lossrate"])*$data[$i]["accounting"];  //计算每个物料的成本,如果accounting=0,则不计入成本
-				$sum+=$data[$i]["cost"];	
-			}
-			//p($data);
-				
-                        $this->assign("bomcode",$bomcode);                    //分配数据
-                        $this->assign("bomname",$bomname);                    //分配数据
-                        $this->assign("data",$data);                    //分配数据
-                        $this->assign("fpage",$page->fpage());
-			$this->assign("sum",$sum);
+                        	$this->assign("bomcode",$bomcode);                    //分配数据
+                        	$this->assign("bomname",$bomname);                    //分配数据
+                        	$this->assign("data",$data);                    //分配数据
+                        	$this->assign("fpage",$page->fpage());
+			if(isset($_GET["ecn_detail_tablename"])){
+				$ecn_detail=D();
+				$ecn_detail_tablename=$_GET["ecn_detail_tablename"];
+				$sql2="select item,reason,description,act,partcode,new_num,new_refs,new_substitute,action_type,oldpart_dealing from {$ecn_detail_tablename};";
+				$ecn_detail_data=$ecn_detail->query($sql2,"select");
+				//p($ecn_detail_data);
+				$this->assign("ecn_detail_data",$ecn_detail_data);
+				//$this->redirect("index_detail");
+                        	$this->display("index_detail");
 
-                        $this->display();
+			}else{
+                        	$this->display("index");
+			}
 
                 }
 		
                 function add(){
 			//p($_GET);
 			$bom=D("bominfo");
-			$bominfo=$bom->field("bomcode,bomname")->find($_GET["bomcode"]);
+			$bominfo=$bom->field("bomcode,bomname,ecnrecord")->find($_GET["bomcode"]);
 			//p($bominfo);
 			$this->assign("bomcode",$bominfo["bomcode"]);
 			$this->assign("bomname",$bominfo["bomname"]);
+			$this->assign("ecnrectablename",$bominfo["ecnrecord"]);
 			
 			$this->display();
                 }
 		function insert(){
 			$bom=D("bominfo");
 
-			//p($_GET);
-			p($_POST);
-			//p($_POST["accounting"]);
-			if(isset($_POST["accounting"])){
-				$_POST["accounting"]=1;
-			}else{
-				$_POST["accounting"]=0;
-			}
-
-			//p($_POST["accounting"]);
-
+			//p($_POST);
 			if(isset($_POST["bomcode"])){
 				$bomcode=$_POST["bomcode"];
 			}elseif(isset($_GET["bomcode"])){
 				$bomcode=$_GET["bomcode"];
 			}
-			$bominfo=$bom->field("tablename")->find($bomcode);
-			$tablename=$bominfo["tablename"];
-			//p($tablename);
-			
+			$bominfo=$bom->field("bomname,ecnrecord")->find($bomcode);
+			$ecnrectablename=$bominfo["ecnrecord"];
+			$bomname=$bominfo["bomname"];
+			//p($bomname);
+
+			//取得ECN明细表名
+			$ecn_detail_tablename="bro_ECN_DETAIL_".$_POST["ecn_num"]."_".$bomname;
+			p($ecn_detail_tablename);
+			//创建变更明细表
+                        if($bom->createEcnDetailTable($ecn_detail_tablename)){
+				p("创建变更明细表成功");
+                                $_POST["ecn_detail_tablename"]=$ecn_detail_tablename;
+				//执行插入变更明细表操作
+				for($i=1;$i<=$_POST["count"];$i++){
+					$item=$i;
+					if(isset($_POST["reason{$i}"])){
+						$reason=$_POST["reason{$i}"];
+					}
+					if(isset($_POST["description{$i}"])){
+						$description=$_POST["description{$i}"];
+					}
+					if(isset($_POST["act{$i}"])){
+						$act=$_POST["act{$i}"];
+					}
+					if(isset($_POST["partcode{$i}"])){
+						$partcode=$_POST["partcode{$i}"];
+					}
+					if(isset($_POST["new_num{$i}"])){
+						$new_num=$_POST["new_num{$i}"];
+					}
+					if(isset($_POST["new_refs{$i}"])){
+						$new_refs=$_POST["new_refs{$i}"];
+					}
+					if(isset($_POST["new_substitute{$i}"])){
+						$new_substitute=$_POST["new_substitute{$i}"];
+					}
+					if(isset($_POST["action_type{$i}"])){
+						$action_type=$_POST["action_type{$i}"];
+					}
+					if(isset($_POST["oldpart_dealing{$i}"])){
+						$oldpart_dealing=$_POST["oldpart_dealing{$i}"];
+					}
+					//插入变更明细表数据
+					$ecndetail=D();
+					$sql1='insert into '.$ecn_detail_tablename.'(item,reason,description,act,partcode,new_num,new_refs,new_substitute,action_type,oldpart_dealing) values("'.$item.'","'.$reason.'","'.$description.'","'.$act.'","'.$partcode.'","'.$new_num.'","'.$new_refs.'","'.$new_substitute.'","'.$action_type.'","'.$oldpart_dealing.'");';
+					//p($sql1);
+					 $result1=$ecndetail->query($sql1,"insert");               //插入数据
+                        		//p($result);
+                        		if($result1){
+						p("插入ECN明细表 {$ecn_detail_tablename} 成功");
+                        		}else{
+                                		$this->error("插入ECN明细表 {$ecn_detail_tablename} 失败",3,"ecnrecord/add");
+                        		}
+				}
+                        }else{
+				p("创建ECN变更明细表失败！");
+                                $_POST["ecn_detail_tablename"]="";
+                                $this->error("创建ECN变更明细表失败！",3,"bominfo/add");
+                        }
+				
+
+			$_POST["ecntime"]=time();			
+
 			$tab=D();
 		
-                        $sql='insert into '.$tablename.'(partcode,num,refs,substitute,accounting) values("'.$_POST["partcode"].'","'.$_POST["num"].'","'.$_POST["refs"].'","'.$_POST["substitute"].'","'.$_POST["accounting"].'");';
-			//p($sql);
+                        $sql='insert into '.$ecnrectablename.'(ecn_num,ecn_detail_tablename,description,ecntime) values("'.$_POST["ecn_num"].'","'.$_POST["ecn_detail_tablename"].'","'.$_POST["description"].'","'.$_POST["ecntime"].'");';
+			p($sql);
                         $result=$tab->query($sql,"insert");               //插入数据
 			//p($result);
 			if($result){
-				$this->success("添加物料进BOM成功！",3,"detailpart/index/bomcode/{$bomcode}");
+				$this->success("添加ECN 记录进成功！",3,"ecnrecord/index/bomcode/{$bomcode}");
 			}else{
-				$this->error($tab->getMsg(),3,"detailpart/add");
+				$this->error($tab->getMsg(),3,"ecnrecord/add");
 			}
 			
                 }
@@ -195,18 +238,18 @@
 			}else{
 				$bomcode=$_GET["bomcode"];
 			}
-			$bomitem=$bom->field("tablename")->find($bomcode);
-			$tablename=$bomitem["tablename"];
+			$bomitem=$bom->field("ecnrecord")->find($bomcode);
+			$tablename=$bomitem["ecnrecord"];
 			//p($tablename);
 			$tab=D();
-			$sql='delete from '.$tablename.' where partcode="'.$_GET["partcode"].'";';
+			$sql='delete from '.$tablename.' where item="'.$_GET["ecn_item"].'";';
 			//p($sql);
 			$result=$tab->query($sql,"delete");	
 			
 			if($result){
-				$this->success("删除器件项成功！",3,"detailpart/index/bomcode/{$bomcode}");
+				$this->success("删除ECN单成功！",1,"ecnrecord/index/bomcode/{$bomcode}");
 			}else{
-				$this->error("删除器件项失败！",3,"detailpart/index/bomcode/{$bomcode}");
+				$this->error("删除ECN单项失败！".$tab->getMsg(),3,"ecnrecord/index/bomcode/{$bomcode}");
 			}
 			
 			
