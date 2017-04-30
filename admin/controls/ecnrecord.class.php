@@ -1,7 +1,7 @@
 <?php
         class Ecnrecord {
                 function index(){
-			p($_GET);
+			//p($_GET);
                         $bomcode=$_GET["bomcode"];
                         //p($bomcode);
                         $bom=D("bominfo");
@@ -16,7 +16,7 @@
                         //p($total);
                         $page=new Page($total,10);                      //创建分页
 
-                        $sql="select item,ecn_num,description,ecntime from {$ecnrectablename};";
+                        $sql="select item,ecn_num,ecn_detail_tablename,description,ecntime from {$ecnrectablename};";
                         $data=$tab->query($sql,"select");               //查询数据
                         //p($data);
 
@@ -24,10 +24,13 @@
                         	$this->assign("bomname",$bomname);                    //分配数据
                         	$this->assign("data",$data);                    //分配数据
                         	$this->assign("fpage",$page->fpage());
-			if(isset($_GET["ecn_item"]) && isset($_GET["ecn_num"])){
-				
-
-				$this->assign("ecn_num",$_GET["ecn_num"]);
+			if(isset($_GET["ecn_detail_tablename"])){
+				$ecn_detail=D();
+				$ecn_detail_tablename=$_GET["ecn_detail_tablename"];
+				$sql2="select item,reason,description,act,partcode,new_num,new_refs,new_substitute,action_type,oldpart_dealing from {$ecn_detail_tablename};";
+				$ecn_detail_data=$ecn_detail->query($sql2,"select");
+				//p($ecn_detail_data);
+				$this->assign("ecn_detail_data",$ecn_detail_data);
 				//$this->redirect("index_detail");
                         	$this->display("index_detail");
 
@@ -122,8 +125,8 @@
 
 			$tab=D();
 		
-                        $sql='insert into '.$ecnrectablename.'(ecn_num,description,ecntime) values("'.$_POST["ecn_num"].'","'.$_POST["description"].'","'.$_POST["ecntime"].'");';
-			//p($sql);
+                        $sql='insert into '.$ecnrectablename.'(ecn_num,ecn_detail_tablename,description,ecntime) values("'.$_POST["ecn_num"].'","'.$_POST["ecn_detail_tablename"].'","'.$_POST["description"].'","'.$_POST["ecntime"].'");';
+			p($sql);
                         $result=$tab->query($sql,"insert");               //插入数据
 			//p($result);
 			if($result){

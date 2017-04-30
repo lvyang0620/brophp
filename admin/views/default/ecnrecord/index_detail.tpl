@@ -12,10 +12,10 @@
 <{section loop=$data name="ls"}>
 	<tr>
 		<td><{$data[ls].item}></td>
-		<td><a href=""><{$data[ls].ecn_num}></a></td>
+		<td><a href="<{$url}>/index/bomcode/<{$bomcode}>/ecn_detail_tablename/<{$data[ls].ecn_detail_tablename}>"><{$data[ls].ecn_num}></a></td>
 		<td><{$data[ls].description}></td>
 		<td><{$data[ls].ecntime|date_format:"%Y-%m-%d %H:%M:%S"}></td>
-		<td><a href="<{$url}>/mod/bomcode/<{$bomcode}>/ecn_item/<{$data[ls].item}>">修改</a>/<a onclick="return confirm('确定要删除<{$data[ls].ecn_num}>吗？')" href="<{$url}>/del/bomcode/<{$bomcode}>/ecn_item/<{$data[ls].item}>">删除</a>/<a href="<{$url}>/index/bomcode/<{$bomcode}>/ecn_item/<{$data[ls].item}>/ecn_num/<{$data[ls].ecn_num}>" >详细</a></td>
+		<td><a href="<{$url}>/mod/bomcode/<{$bomcode}>/ecn_item/<{$data[ls].item}>">修改</a>/<a onclick="return confirm('确定要删除<{$data[ls].ecn_num}>吗？')" href="<{$url}>/del/bomcode/<{$bomcode}>/ecn_item/<{$data[ls].item}>">删除</a>/<a href="<{$url}>/index/bomcode/<{$bomcode}>/ecn_detail_tablename/<{$data[ls].ecn_detail_tablename}>" >明细</a></td>
 		</tr>	
 	<{sectionelse}>
 		<tr>
@@ -33,7 +33,7 @@
 </table>
 
 <table align="center" width="100%" border="1" cellpadding="0" cellspacing="1">
-	<caption><h3><{$ecn_num}>&nbsp;变更单明细表</h3></caption>i
+	<caption><h3><{$ecn_num}>&nbsp;变更单明细表</h3></caption>
 		<tr>
                         <th>ITEM</th>
                         <th>更改原因</th>
@@ -46,5 +46,22 @@
                         <th>执行方式</th>
                         <th>旧料处理方式</th>
 		</tr>
-
+	<{section loop=$ecn_detail_data name="es"}>
+		<tr>
+			<td><{$ecn_detail_data[es].item}></td>
+			<td><{$ecn_detail_data[es].reason}></td>
+			<td><{$ecn_detail_data[es].description}></td>
+			<td><{$ecn_detail_data[es].act}></td>
+			<td><{$ecn_detail_data[es].partcode}></td>
+			<td><{$ecn_detail_data[es].new_num}></td>
+			<td><{$ecn_detail_data[es].new_refs}></td>
+			<td><{$ecn_detail_data[es].new_substitute}></td>
+			<td><{$ecn_detail_data[es].action_type}></td>
+			<td><{$ecn_detail_data[es].oldpart_dealing}></td>
+		</tr>
+	<{sectionelse}>
+		<tr>
+			<td colspan="10" >变更明细表里没有数据</td>
+		</tr>
+	<{/section}>
 </table>
