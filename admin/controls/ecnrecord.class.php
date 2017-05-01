@@ -232,7 +232,18 @@
 		}
 
                 function del(){
-			//p($_GET);
+			p($_GET);
+			//删除该ECN单号对应的明细表
+			if(isset($_GET["ecn_detail_tablename"])){
+				$ecn_detail_tablename=$_GET["ecn_detail_tablename"];
+				$bom=D("bominfo");
+				if($bom->delBomTable($ecn_detail_tablename)){
+					p("删除ECN明细表{$ecn_detail_tablename}成功！");
+				}else{
+					p("删除ECN明细表{$ecn_detail_tablename}失败！");
+				}
+			}			
+			
 			$bom=D("bominfo");
 			if(isset($_POST["bomcode"])){
 				$bomcode=$_POST["bomcode"];
@@ -243,6 +254,8 @@
 			$tablename=$bomitem["ecnrecord"];
 			//p($tablename);
 			$tab=D();
+
+			//删除该ECN单号
 			$sql='delete from '.$tablename.' where item="'.$_GET["ecn_item"].'";';
 			//p($sql);
 			$result=$tab->query($sql,"delete");	
@@ -252,8 +265,6 @@
 			}else{
 				$this->error("删除ECN单项失败！".$tab->getMsg(),3,"ecnrecord/index/bomcode/{$bomcode}");
 			}
-			
-			
                 }
 
         }
