@@ -139,30 +139,36 @@
                 }
                 function mod(){
 			//p($_GET);
-			$bom=D("bominfo");
-			$bominfo=$bom->field("bomcode,bomname,tablename")->find($_GET["bomcode"]);
-			//p($bominfo);
-			$this->assign("bomcode",$bominfo["bomcode"]);
-			$this->assign("bomname",$bominfo["bomname"]);
+			if(isset($_GET["ecn_item"])){
+				$bom=D("bominfo");
+				$bomcode=$_GET["bomcode"];
+				$bominfo=$bom->field("bomname,ecnrecord")->find($bomcode);
+				$bomname=$bominfo["bomname"];
+				$ecnrecord=$bominfo["ecnrecord"];
+				$ecn_item=$_GET["ecn_item"];
+				$ecn=D();
+				$sql1="select item,ecn_num,ecn_detail_tablename,description from {$ecnrecord} where item=".'"'.$ecn_item.'";';
+				//p($sql1);
+				$ecnrec=$ecn->query($sql1,"select");
+				$ecn_num=$ecnrec[0]["ecn_num"];
+				$description=$ecnrec[0]["description"];
+				$ecn_detail_tablename=$ecnrec[0]["ecn_detail_tablename"];
 
-			$tablename=$bominfo["tablename"];
-                        $tab=D();
-                        $sql='select partcode,num,refs,substitute,accounting from '.$tablename.' where partcode="'.$_GET["partcode"].'";';
-                        //p($sql);
-                        $data=$tab->query($sql,"select");               //插入数据
-                        //p($data);
-			$partcode=$data[0]["partcode"];
-			$num=$data[0]["num"];
-			$refs=$data[0]["refs"];
-			$substitute=$data[0]["substitute"];
-			$accounting=$data[0]["accounting"];
-			//p($accounting);
-			$this->assign("partcode",$partcode);
-			$this->assign("num",$num);
-			$this->assign("refs",$refs);
-			$this->assign("substitute",$substitute);
-			$this->assign("accounting",$accounting);
-			$this->display();
+				$ecn_detail=D();
+				$sql2="select item,reason,description,act,partcode,new_num,new_refs,new_substitute,action_type,oldpart_dealing from {$ecn_detail_tablename};";
+				$data=$ecn_detail->query($sql2,"select");
+				p($data);
+				$this->assign("data",$data);
+
+				$this->assign("bomcode",$bomcode);
+				$this->assign("bomname",$bomname);
+				$this->assign("ecn_num",$ecn_num);
+				$this->assign("description",$description);
+				$this->assign("ecn_detail_tablename",$ecn_detail_tablename);
+				$this->display();	
+			}else{
+				p("ecn_item传送错误");
+			}			
                 }
                 function update(){
 			//p($_POST);	
