@@ -24,7 +24,8 @@
                         	$this->assign("bomname",$bomname);                    //分配数据
                         	$this->assign("data",$data);                    //分配数据
                         	$this->assign("fpage",$page->fpage());
-			if(isset($_GET["ecn_detail_tablename"])){
+			if(isset($_GET["ecn_detail_tablename"]) && isset($_GET["ecn_num"])){
+				$this->assign("ecn_num",$_GET["ecn_num"]);
 				$ecn_detail=D();
 				$ecn_detail_tablename=$_GET["ecn_detail_tablename"];
 				$sql2="select item,reason,description,act,partcode,new_num,new_refs,new_substitute,action_type,oldpart_dealing from {$ecn_detail_tablename};";
