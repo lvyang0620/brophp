@@ -171,8 +171,11 @@
 			}			
                 }
                 function update(){
-			//p($_POST);	
-			//p($_GET);
+			p($_POST);	
+			p("************************************");
+			p($_GET);
+
+			/*
 			$bom=D("bominfo");
 			$bominfo=$bom->field("bomcode,bomname,tablename")->find($_GET["bomcode"]);
 			$tablename=$bominfo["tablename"];
@@ -225,7 +228,7 @@
                         	}
 				
 			}
-				
+			*/	
 
                 }
 

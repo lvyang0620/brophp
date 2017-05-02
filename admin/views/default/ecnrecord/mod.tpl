@@ -1,12 +1,12 @@
 <p align="right"><a href="<{$url}>/index/bomcode/<{$bomcode}>">返回</a></p>
 <center><h2>修改&nbsp;<{$bomname}>&nbsp;BOM的&nbsp;<{$ecn_num}>&nbsp;ECN变更明细单</h2></center>
-<form action="<{$url}>/insert/bomcode/<{$bomcode}>" method="post" onsubmit="return rowcount()" >
+<form action="<{$url}>/update/bomcode/<{$bomcode}>" method="post" onsubmit="return rowcount()" >
 	ECN单号：<input type="text" name="ecn_num" value="<{$ecn_num}>"><br><br>
 	变更描述：<textarea cols="40" rows="5" name="description"><{$description}></textarea><br><br>
 		<input type="hidden" name="bomcode" value="<{$bomcode}>">
 		<input type="hidden" name="ecnrectablename" value="<{$ecnrectablename}>">
 		<input type="hidden" id="count" name="count" >
-	<input type="submit" name="sub" value="加入变更表" >
+	<input type="submit" name="sub" value="修改变更单" >
 	
 <table align="center" width="100%" border="1" cellpadding="0" cellspacing="1" id="tb" >
 	<tbody>
@@ -70,8 +70,10 @@ function delrow(){
 //alert(i);
 }
 //var i=1;
-var i=2;
+//var i=2;
+var i=tb.rows.length-1;
 function addrow(){
+	//alert(i);
     	var x=document.getElementById('tb').insertRow(i+1);
 	var h1=x.insertCell(0);
 	var h2=x.insertCell(1);
