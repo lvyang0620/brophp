@@ -37,15 +37,15 @@
 		<{section loop=$data name="ls"}>
 		<tr>
 			<td><div align="center" ><{$data[ls].item}></div></td>
-			<td><div align="center" ><input type="text" name="reason1" id="reason1" size="10" value="<{$data[ls].reason}>"></div></td>
-			<td><div align="center" ><input type="text" name="description1" id="description1" value="<{$data[ls].description}>"></div></td>
-			<td><div align="center" ><input type="text" name="act1" id="act1" size="10" value="<{$data[ls].act}>"></div></td>
-			<td><div align="center" ><input type="text" name="partcode1" id="partcode1" size="10" value="<{$data[ls].partcode}>"></div></td>
-			<td><div align="center" ><input type="text" name="new_num1" id="new_num1" size="5" value="<{$data[ls].new_num}>"></div></td>
-			<td><div align="center" ><input type="text" name="new_refs1" id="new_refs1" value="<{$data[ls].new_refs}>"></div></td>
-			<td><div align="center" ><input type="text" name="new_substitute1" id="new_substitute1" size="10" value="<{$data[ls].new_substitute}>"></div></td>
-			<td><div align="center" ><input type="text" name="action_type1" id="action_type1" size="10" value="<{$data[ls].action_type}>"></div></td>
-			<td><div align="center" ><input type="text" name="oldpart_dealing1" id="oldpart_dealing1" size="10" value="<{$data[ls].oldpart_dealing}>"></div></td>
+			<td><div align="center" ><input type="text" name="reason<{$smarty.section.ls.iteration}>" id="reason<{$smarty.section.ls.iteration}>" size="10" value="<{$data[ls].reason}>"></div></td>
+			<td><div align="center" ><input type="text" name="description<{$smarty.section.ls.iteration}>" id="description<{$smarty.section.ls.iteration}>" value="<{$data[ls].description}>"></div></td>
+			<td><div align="center" ><input type="text" name="act<{$smarty.section.ls.iteration}>" id="act<{$smarty.section.ls.iteration}>" size="10" value="<{$data[ls].act}>"></div></td>
+			<td><div align="center" ><input type="text" name="partcode<{$smarty.section.ls.iteration}>" id="partcode<{$smarty.section.ls.iteration}>" size="10" value="<{$data[ls].partcode}>"></div></td>
+			<td><div align="center" ><input type="text" name="new_num<{$smarty.section.ls.iteration}>" id="new_num<{$smarty.section.ls.iteration}>" size="5" value="<{$data[ls].new_num}>"></div></td>
+			<td><div align="center" ><input type="text" name="new_refs<{$smarty.section.ls.iteration}>" id="new_refs<{$smarty.section.ls.iteration}>" value="<{$data[ls].new_refs}>"></div></td>
+			<td><div align="center" ><input type="text" name="new_substitute<{$smarty.section.ls.iteration}>" id="new_substitute<{$smarty.section.ls.iteration}>" size="10" value="<{$data[ls].new_substitute}>"></div></td>
+			<td><div align="center" ><input type="text" name="action_type<{$smarty.section.ls.iteration}>" id="action_type<{$smarty.section.ls.iteration}>" size="10" value="<{$data[ls].action_type}>"></div></td>
+			<td><div align="center" ><input type="text" name="oldpart_dealing<{$smarty.section.ls.iteration}>" id="oldpart_dealing<{$smarty.section.ls.iteration}>" size="10" value="<{$data[ls].oldpart_dealing}>"></div></td>
 		</tr>
 		<{sectionelse}>
 			<tr>
