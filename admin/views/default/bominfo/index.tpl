@@ -64,7 +64,7 @@
                   		</select>
 
 			</td>
-			<td colspan="7" align="right"><{$fpage}></td>
+			<td colspan="8" align="right"><{$fpage}></td>
 		</tr>
 
 	</form>
