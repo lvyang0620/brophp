@@ -16,7 +16,7 @@
                         //p($total);
                         $page=new Page($total,10);                      //创建分页
 
-                        $sql="select item,ecn_num,ecn_detail_tablename,description,ecntime from {$ecnrectablename};";
+                        $sql="select item,ecn_num,ecn_detail_tablename,description,ecntime,lastmodtime from {$ecnrectablename};";
                         $data=$tab->query($sql,"select");               //查询数据
                         //p($data);
 
@@ -68,10 +68,10 @@
 
 			//取得ECN明细表名
 			$ecn_detail_tablename="bro_ECN_DETAIL_".$_POST["ecn_num"]."_".$bomname;
-			p($ecn_detail_tablename);
+			//p($ecn_detail_tablename);
 			//创建变更明细表
                         if($bom->createEcnDetailTable($ecn_detail_tablename)){
-				p("创建变更明细表成功");
+				//p("创建变更明细表成功");
                                 $_POST["ecn_detail_tablename"]=$ecn_detail_tablename;
 				//执行插入变更明细表操作
 				for($i=1;$i<=$_POST["count"];$i++){
@@ -127,7 +127,7 @@
 			$tab=D();
 		
                         $sql='insert into '.$ecnrectablename.'(ecn_num,ecn_detail_tablename,description,ecntime) values("'.$_POST["ecn_num"].'","'.$_POST["ecn_detail_tablename"].'","'.$_POST["description"].'","'.$_POST["ecntime"].'");';
-			p($sql);
+			//p($sql);
                         $result=$tab->query($sql,"insert");               //插入数据
 			//p($result);
 			if($result){
@@ -135,6 +135,8 @@
 			}else{
 				$this->error($tab->getMsg(),3,"ecnrecord/add");
 			}
+			
+			//插入所有ECN修改记录和修改明细表后，修改对应的BOM内容
 			
                 }
                 function mod(){
@@ -150,6 +152,7 @@
 				$sql1="select item,ecn_num,ecn_detail_tablename,description from {$ecnrecord} where item=".'"'.$ecn_item.'";';
 				//p($sql1);
 				$ecnrec=$ecn->query($sql1,"select");
+				$ecn_item=$ecnrec[0]["item"];
 				$ecn_num=$ecnrec[0]["ecn_num"];
 				$description=$ecnrec[0]["description"];
 				$ecn_detail_tablename=$ecnrec[0]["ecn_detail_tablename"];
@@ -157,11 +160,12 @@
 				$ecn_detail=D();
 				$sql2="select item,reason,description,act,partcode,new_num,new_refs,new_substitute,action_type,oldpart_dealing from {$ecn_detail_tablename};";
 				$data=$ecn_detail->query($sql2,"select");
-				p($data);
+				//p($data);
 				$this->assign("data",$data);
 
 				$this->assign("bomcode",$bomcode);
 				$this->assign("bomname",$bomname);
+				$this->assign("ecn_item",$ecn_item);
 				$this->assign("ecn_num",$ecn_num);
 				$this->assign("description",$description);
 				$this->assign("ecn_detail_tablename",$ecn_detail_tablename);
@@ -171,10 +175,8 @@
 			}			
                 }
         	function update(){
-			p($_POST);	
-			p("************************************");
-			p($_GET);
-			p("************************************");
+			//p($_POST);	
+			//p($_GET);
 			$bom=D("bominfo");
 			if(isset($_POST["bomcode"])){
 				$bomcode=$_POST["bomcode"];
@@ -187,11 +189,11 @@
 			//取得ECN明细表名
 			$ecn=D();
 			$sql2="select ecn_detail_tablename from ".$ecnrectablename.' where ecn_num="'.$_POST["ecn_num"].'";';
-			p($sql2);
+			//p($sql2);
 			$ecn_rec=$ecn->query($sql2,"select");
-			p($ecn_rec);
+			//p($ecn_rec);
 			$ecn_detail_tablename=$ecn_rec[0]["ecn_detail_tablename"];
-			p($ecn_detail_tablename);
+			//p($ecn_detail_tablename);
 			$ecndetail=D();
 			$sql='select count(1) from '.$ecn_detail_tablename.';';		//获取原明细表的行数
 			$oldcount=$ecndetail->query($sql,"total");
@@ -207,7 +209,7 @@
 					$ecndetail=D();
 					$sql1='update '.$ecn_detail_tablename.' set item="'.$item.'",reason="'.$_POST["reason{$i}"].'",description="'.$_POST["description{$i}"].'",act="'.$_POST["act{$i}"].'",partcode="'.$_POST["partcode{$i}"].'",new_num="'.$_POST["new_num{$i}"].'",new_refs="'.$_POST["new_refs{$i}"].'",new_substitute="'.$_POST["new_substitute{$i}"].'",action_type="'.$_POST["action_type{$i}"].'",oldpart_dealing="'.$_POST["oldpart_dealing{$i}"].'"  where item="'.$item.'";';
 
-					p($sql1);					
+					//p($sql1);					
 					 $result1=$ecndetail->query($sql1,"update");               //插入数据
                         		//p($result);
                         		if($result1){
@@ -215,7 +217,7 @@
                         		}else{
                                 		p("ECN明细表 {$ecn_detail_tablename} 第{$i}行数据没有修改！");
                         		}
-				}
+			}
 			//2，插入新增的ECN修改数据行
 			//$add_count=$_POST["count"]-$oldcount;
 			for($i=$oldcount+1;$i<=$_POST["count"];$i++){
@@ -270,7 +272,7 @@
 					$ecndetail=D();					
 					$sql1='update '.$ecn_detail_tablename.' set item="'.$item.'",reason="'.$_POST["reason{$i}"].'",description="'.$_POST["description{$i}"].'",act="'.$_POST["act{$i}"].'",partcode="'.$_POST["partcode{$i}"].'",new_num="'.$_POST["new_num{$i}"].'",new_refs="'.$_POST["new_refs{$i}"].'",new_substitute="'.$_POST["new_substitute{$i}"].'",action_type="'.$_POST["action_type{$i}"].'",oldpart_dealing="'.$_POST["oldpart_dealing{$i}"].'"  where item="'.$item.'";';
 
-					p($sql1);					
+					//p($sql1);					
 					 $result1=$ecndetail->query($sql1,"update");               //插入数据
                         		//p($result);
                         		if($result1){
@@ -284,7 +286,7 @@
 					$item=$i;
 					$ecndetail=D();					
 					$sql1='delete from '.$ecn_detail_tablename.' where item="'.$item.'";';
-					p($sql1);					
+					//p($sql1);					
 					$result1=$ecndetail->query($sql1,"delete");               //插入数据
                         		//p($result);
                         		if($result1){
@@ -294,24 +296,26 @@
                         		}
 				}
             }
-				
-			/*
-			$_POST["ecntime"]=time();			
+			//修改ECN记录表	
+			
+			//$_POST["ecntime"]=time();			
 			$tab=D();		
-            $sql='insert into '.$ecnrectablename.'(ecn_num,ecn_detail_tablename,description,ecntime) values("'.$_POST["ecn_num"].'","'.$_POST["ecn_detail_tablename"].'","'.$_POST["description"].'","'.$_POST["ecntime"].'");';
-			p($sql);
-                        $result=$tab->query($sql,"insert");               //插入数据
+			$sql='update '.$ecnrectablename.' set ecn_num="'.$_POST["ecn_num"].'",description="'.$_POST["description"].'",lastmodtime="'.time().'"  where item="'.$_POST["ecn_item"].'";';
+			//p($sql);
+                        $result=$tab->query($sql,"update");               //修改数据
 			//p($result);
 			if($result){
-				$this->success("添加ECN 记录进成功！",3,"ecnrecord/index/bomcode/{$bomcode}");
+				$this->success("修改ECN记录进成功！",3,"ecnrecord/index/bomcode/{$bomcode}");
 			}else{
-				$this->error($tab->getMsg(),3,"ecnrecord/add");
+				$this->error($tab->getMsg(),3,"ecnrecord/index/bomcode/{$bomcode}");
 			}
-			*/
+		
+			//所有ECN修改记录和明细表修改完成后，修改对应的BOM内容			
+	
         }
 
         function del(){
-			p($_GET);
+			//p($_GET);
 			//删除该ECN单号对应的明细表
 			if(isset($_GET["ecn_detail_tablename"])){
 				$ecn_detail_tablename=$_GET["ecn_detail_tablename"];

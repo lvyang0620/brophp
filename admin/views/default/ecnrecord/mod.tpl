@@ -3,8 +3,8 @@
 <form action="<{$url}>/update/bomcode/<{$bomcode}>" method="post" onsubmit="return rowcount()" >
 	ECN单号：<input type="text" name="ecn_num" value="<{$ecn_num}>"><br><br>
 	变更描述：<textarea cols="40" rows="5" name="description"><{$description}></textarea><br><br>
+		<input type="hidden" name="ecn_item" value="<{$ecn_item}>">
 		<input type="hidden" name="bomcode" value="<{$bomcode}>">
-		<input type="hidden" name="ecnrectablename" value="<{$ecnrectablename}>">
 		<input type="hidden" id="count" name="count" >
 	<input type="submit" name="sub" value="修改变更单" >
 	

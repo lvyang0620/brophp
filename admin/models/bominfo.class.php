@@ -17,7 +17,7 @@
 
 		function createEcnRecTable($tablename){
 			$db=D();
-			$sql="create table {$tablename}(item int not null primary key auto_increment,ecn_num varchar(50) not null unique,ecn_detail_tablename varchar(100) not null unique,description varchar(250),ecntime int not null) engine=InnoDB character set utf8 collate utf8_general_ci;";
+			$sql="create table {$tablename}(item int not null primary key auto_increment,ecn_num varchar(50) not null unique,ecn_detail_tablename varchar(100) not null unique,description varchar(250),ecntime int not null,lastmodtime int) engine=InnoDB character set utf8 collate utf8_general_ci;";
 			p($sql);
 			$result=$db->query($sql);
 			return $result;
