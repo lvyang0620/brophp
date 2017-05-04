@@ -1,7 +1,10 @@
 <ul style="list-style:none;margin:0px;padding:0px;">
-	<li><h3>BOM管理</h3>
+	<li><h3>工程管理</h3>
 		<ul>
 			<li><a href="<{$app}>/bominfo" target="main">BOM管理</a></li>
+		</ul>
+		<ul>
+			<li><a href="<{$app}>/ecnrecord" target="main">ECN管理</a></li>
 		</ul>
 	</li>
 	<li><h3>基本资料管理</h3>

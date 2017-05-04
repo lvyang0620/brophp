@@ -1,5 +1,41 @@
+<br>
+<table align="left" border="0">
+	<tr>
+		<td><h4>项目名:</h4></td>
+                        <td colspan="1">
+                                <select name="project_id" onchange="window.location.href=this.options[selectedIndex].value" >
+                                                        <option value="<{$url}>/index/project_id/0">全部</option>
+                                        <{section loop="$pro" name="ls"}>
+                                                <{if $pro_id eq $pro[ls].id }>
+                                                        <option selected value="<{$url}>/index/project_id/<{$pro[ls].id}>"><{$pro[ls].name}></option>
+                                                <{else}>
+                                                        <option value="<{$url}>/index/project_id/<{$pro[ls].id}>"><{$pro[ls].name}></option>
+                                                <{/if}>
+                                        <{/section}>
+                                </select>
+
+                        </td>
+
+		<td><h4>BOM名:</h4></td>
+                        <td colspan="1">
+                                <select name="bom_name" onchange="window.location.href=this.options[selectedIndex].value" >
+                                                        <option value="<{$url}>/index/bomname/0">全部</option>
+                                        <{section loop=$bominfo name="bm"}>
+                                                <{if $bomname eq $bominfo[bm].bomname }>
+                                                        <option selected value="<{$url}>/index/project_id/<{$pro_id}>/bomname/<{$bominfo[bm].bomname}>"><{$bominfo[bm].bomname}></option>
+                                                <{else}>
+                                                        <option value="<{$url}>/index/project_id/<{$pro_id}>/bomname/<{$bominfo[bm].bomname}>"><{$bominfo[bm].bomname}></option>
+                                                <{/if}>
+                                        <{/section}>
+                                </select>
+
+                        </td>
+
+	</tr>
+	
+</table>
+
 <table align="center" width="100%" border="1">
-<p align="right"><a href="<{$app}>/bominfo/index">返回</a></p>
 <caption><h2><{$bomname}>&nbsp;BOM的变更记录</h2></caption>
 	<tr>
 		<th>ITEM</th>
@@ -66,4 +102,13 @@
 			<td colspan="10" >变更明细表里没有数据</td>
 		</tr>
 	<{/section}>
+
+        <script>
+                var dels=document.getElementsByName("id[]");
+                function sel(value){
+                        for(var i=0;i<dels.length;i++){
+                                dels[i].checked=value;
+                        }
+                }
+        </script>
 </table>
