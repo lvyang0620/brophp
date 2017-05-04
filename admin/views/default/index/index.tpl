@@ -6,7 +6,7 @@
 	<frameset rows="110,*">
 		<frame src="<{$url}>/top" name="top">
 
-		<frameset cols="160,*">
+		<frameset cols="180,*">
 			<frame src="<{$url}>/menu" name="menu" >
 
 			<frame src="<{$url}>/main" name="main">
