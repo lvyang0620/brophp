@@ -134,9 +134,10 @@
 			}elseif(isset($_GET["bomcode"])){
 				$bomcode=$_GET["bomcode"];
 			}
-			$bominfo=$bom->field("bomname,ecnrecord")->find($bomcode);
+			$bominfo=$bom->field("bomname,tablename,ecnrecord")->find($bomcode);
 			$ecnrectablename=$bominfo["ecnrecord"];
 			$bomname=$bominfo["bomname"];
+			$tablename=$bominfo["tablename"];
 			//p($bomname);
 
 			//取得ECN明细表名
@@ -161,15 +162,39 @@
 					if(isset($_POST["partcode{$i}"])){
 						$partcode=$_POST["partcode{$i}"];
 					}
-					if(isset($_POST["new_num{$i}"])){
+					$bom_part=D();
+					$sql_bom_part="select num,refs,substitute from {$tablename} where partcode={$partcode};";
+					$result_bom_part=$bom_part->query($sql_bom_part,"select");
+					if(!empty($_POST["new_num{$i}"])){
 						$new_num=$_POST["new_num{$i}"];
+					}else{
+						if($result_bom_part){
+							$new_num=$result_bom_part[0]["num"];
+						}else{
+							p("BOM中没有找到此物料编码：{$partcode}");
+						}
 					}
-					if(isset($_POST["new_refs{$i}"])){
+					p($_POST["new_refs{$i}"]);
+					if(!empty($_POST["new_refs{$i}"])){
 						$new_refs=$_POST["new_refs{$i}"];
-					}
-					if(isset($_POST["new_substitute{$i}"])){
+					}else{
+                                                if($result_bom_part){
+                                                        $new_refs=$result_bom_part[0]["refs"];
+                                                }else{
+                                                        p("BOM中没有找到此物料编码：{$partcode}");
+                                                }
+                                        }
+
+					if(!empty($_POST["new_substitute{$i}"])){
 						$new_substitute=$_POST["new_substitute{$i}"];
-					}
+					}else{
+                                                if($result_bom_part){
+                                                        $new_substitute=$result_bom_part[0]["substitute"];
+                                                }else{
+                                                        p("BOM中没有找到此物料编码：{$partcode}");
+                                                }
+                                        }
+
 					if(isset($_POST["action_type{$i}"])){
 						$action_type=$_POST["action_type{$i}"];
 					}
@@ -187,6 +212,18 @@
                         		}else{
                                 		$this->error("插入ECN明细表 {$ecn_detail_tablename} 失败",3,"ecnrecord/add");
                         		}
+
+					//插入所有ECN修改记录和修改明细表后，修改对应的BOM内容
+					$update_bom=D();
+					$sql_update_bom='update '.$tablename.' set num="'.$new_num.'",refs="'.$new_refs.'",substitute="'.$new_substitute.'"  where partcode="'.$partcode.'";';
+					p($sql_update_bom);	
+					$result_update_bom=$update_bom->query($sql_update_bom,"query");
+					if($result_update_bom){
+						p("依据ECN内容更新BOM的{$partcode}器件内容成功");
+					}else{
+						p("依据ECN内容更新BOM的{$partcode}器件内容失败");
+					}
+
 				}
                         }else{
 				p("创建ECN变更明细表失败！");
@@ -209,7 +246,6 @@
 				$this->error($tab->getMsg(),3,"ecnrecord/add");
 			}
 			
-			//插入所有ECN修改记录和修改明细表后，修改对应的BOM内容
 			
                 }
                 function mod(){
@@ -256,9 +292,10 @@
 			}elseif(isset($_GET["bomcode"])){
 				$bomcode=$_GET["bomcode"];
 			}
-			$bominfo=$bom->field("bomname,ecnrecord")->find($bomcode);
+			$bominfo=$bom->field("bomname,tablename,ecnrecord")->find($bomcode);
 			$ecnrectablename=$bominfo["ecnrecord"];
 			$bomname=$bominfo["bomname"];
+			$tablename=$bominfo["tablename"];
 			//取得ECN明细表名
 			$ecn=D();
 			$sql2="select ecn_detail_tablename from ".$ecnrectablename.' where ecn_num="'.$_POST["ecn_num"].'";';
@@ -274,14 +311,69 @@
             		if($_POST["count"]>=$oldcount){						//修改的ECN行数大于等于原来的ECN明细单修改的行数
 				//先更新已有数据，再插入新增的ECN修改数据
 				//1，先更新已有数据
-                	$_POST["ecn_detail_tablename"]=$ecn_detail_tablename;
+                		$_POST["ecn_detail_tablename"]=$ecn_detail_tablename;
 				//执行插入变更明细表操作
-			for($i=1;$i<=$oldcount;$i++){
+				for($i=1;$i<=$oldcount;$i++){
 					$item=$i;
+										if(isset($_POST["reason{$i}"])){
+						$reason=$_POST["reason{$i}"];
+					}
+					if(isset($_POST["description{$i}"])){
+						$description=$_POST["description{$i}"];
+					}
+					if(isset($_POST["act{$i}"])){
+						$act=$_POST["act{$i}"];
+					}
+					if(isset($_POST["partcode{$i}"])){
+						$partcode=$_POST["partcode{$i}"];
+					}
+
+					$bom_part=D();
+                                        $sql_bom_part="select num,refs,substitute from {$tablename} where partcode={$partcode};";
+                                        $result_bom_part=$bom_part->query($sql_bom_part,"select");
+
+					if(!empty($_POST["new_num{$i}"])){
+						$new_num=$_POST["new_num{$i}"];
+					}else{
+						if($result_bom_part){
+							$new_num=$result_bom_part[0]["num"];
+						}else{
+							p("BOM中没有找到此物料编码：{$partcode}");
+						}
+					}
+				
+					if(!empty($_POST["new_refs{$i}"])){
+						$new_refs=$_POST["new_refs{$i}"];
+					}else{
+                                                if($result_bom_part){
+                                                        $new_refs=$result_bom_part[0]["refs"];
+                                                }else{
+                                                        p("BOM中没有找到此物料编码：{$partcode}");
+                                                }
+                                        }
+					
+					if(!empty($_POST["new_substitute{$i}"])){
+						$new_substitute=$_POST["new_substitute{$i}"];
+					}else{
+                                                if($result_bom_part){
+                                                        $new_substitute=$result_bom_part[0]["substitute"];
+                                                }else{
+                                                        p("BOM中没有找到此物料编码：{$partcode}");
+                                                }
+                                        }
+					
+					if(isset($_POST["action_type{$i}"])){
+						$action_type=$_POST["action_type{$i}"];
+					}
+					if(isset($_POST["oldpart_dealing{$i}"])){
+						$oldpart_dealing=$_POST["oldpart_dealing{$i}"];
+					}
+					
 					//插入变更明细表数据
 					$ecndetail=D();
-					$sql1='update '.$ecn_detail_tablename.' set item="'.$item.'",reason="'.$_POST["reason{$i}"].'",description="'.$_POST["description{$i}"].'",act="'.$_POST["act{$i}"].'",partcode="'.$_POST["partcode{$i}"].'",new_num="'.$_POST["new_num{$i}"].'",new_refs="'.$_POST["new_refs{$i}"].'",new_substitute="'.$_POST["new_substitute{$i}"].'",action_type="'.$_POST["action_type{$i}"].'",oldpart_dealing="'.$_POST["oldpart_dealing{$i}"].'"  where item="'.$item.'";';
-
+					//$sql1='update '.$ecn_detail_tablename.' set item="'.$item.'",reason="'.$_POST["reason{$i}"].'",description="'.$_POST["description{$i}"].'",act="'.$_POST["act{$i}"].'",partcode="'.$_POST["partcode{$i}"].'",new_num="'.$_POST["new_num{$i}"].'",new_refs="'.$_POST["new_refs{$i}"].'",new_substitute="'.$_POST["new_substitute{$i}"].'",action_type="'.$_POST["action_type{$i}"].'",oldpart_dealing="'.$_POST["oldpart_dealing{$i}"].'"  where item="'.$item.'";';
+					$sql1='update '.$ecn_detail_tablename.' set item="'.$item.'",reason="'.$reason.'",description="'.$description.'",act="'.$act.'",partcode="'.$_POST["partcode{$i}"].'",new_num="'.$new_num.'",new_refs="'.$new_refs.'",new_substitute="'.$new_substitute.'",action_type="'.$action_type.'",oldpart_dealing="'.$oldpart_dealing.'"  where item="'.$item.'";';
+					
 					//p($sql1);					
 					 $result1=$ecndetail->query($sql1,"update");               //插入数据
                         		//p($result);
@@ -290,7 +382,18 @@
                         		}else{
                                 		p("ECN明细表 {$ecn_detail_tablename} 第{$i}行数据没有修改！");
                         		}
-			}
+					
+					//修改所有ECN修改记录和修改明细表后，修改对应的BOM内容
+					$update_bom=D();
+					$sql_update_bom='update '.$tablename.' set num="'.$new_num.'",refs="'.$new_refs.'",substitute="'.$new_substitute.'"  where partcode="'.$partcode.'";';
+					p($sql_update_bom);	
+					$result_update_bom=$update_bom->query($sql_update_bom,"query");
+					if($result_update_bom){
+						p("依据ECN内容更新BOM的{$partcode}器件内容成功");
+					}else{
+						p("依据ECN内容更新BOM的{$partcode}器件内容失败");
+					}	
+				}
 			//2，插入新增的ECN修改数据行
 			//$add_count=$_POST["count"]-$oldcount;
 			for($i=$oldcount+1;$i<=$_POST["count"];$i++){
@@ -307,15 +410,41 @@
 					if(isset($_POST["partcode{$i}"])){
 						$partcode=$_POST["partcode{$i}"];
 					}
-					if(isset($_POST["new_num{$i}"])){
+
+					$bom_part=D();
+                                        $sql_bom_part="select num,refs,substitute from {$tablename} where partcode={$partcode};";
+                                        $result_bom_part=$bom_part->query($sql_bom_part,"select");
+					p($result_bom_part);
+					if(!empty($_POST["new_num{$i}"])){
 						$new_num=$_POST["new_num{$i}"];
+					}else{
+						if($result_bom_part){
+							$new_num=$result_bom_part[0]["num"];
+						}else{
+							p("BOM中没有找到此物料编码：{$partcode}");
+						}
 					}
-					if(isset($_POST["new_refs{$i}"])){
+				
+					if(!empty($_POST["new_refs{$i}"])){
 						$new_refs=$_POST["new_refs{$i}"];
-					}
-					if(isset($_POST["new_substitute{$i}"])){
+					}else{
+                                                if($result_bom_part){
+                                                        $new_refs=$result_bom_part[0]["refs"];
+                                                }else{
+                                                        p("BOM中没有找到此物料编码：{$partcode}");
+                                                }
+                                        }
+					
+					if(!empty($_POST["new_substitute{$i}"])){
 						$new_substitute=$_POST["new_substitute{$i}"];
-					}
+					}else{
+                                                if($result_bom_part){
+                                                        $new_substitute=$result_bom_part[0]["substitute"];
+                                                }else{
+                                                        p("BOM中没有找到此物料编码：{$partcode}");
+                                                }
+                                        }
+					
 					if(isset($_POST["action_type{$i}"])){
 						$action_type=$_POST["action_type{$i}"];
 					}
@@ -334,6 +463,17 @@
                                 	//$this->error("插入ECN明细表 {$ecn_detail_tablename} 失败",3,"ecnrecord/add");
 									p("在ECN明细表 {$ecn_detail_tablename} 中新插入第{$i}行数据失败！");
                         		}
+								
+					//插入所有ECN修改记录和修改明细表后，修改对应的BOM内容
+					$update_bom=D();
+					$sql_update_bom='update '.$tablename.' set num="'.$new_num.'",refs="'.$new_refs.'",substitute="'.$new_substitute.'"  where partcode="'.$partcode.'";';
+					p($sql_update_bom);	
+					$result_update_bom=$update_bom->query($sql_update_bom,"query");
+					if($result_update_bom){
+						p("依据ECN内容更新BOM的{$partcode}器件内容成功");
+					}else{
+						p("依据ECN内容更新BOM的{$partcode}器件内容失败");
+					}
 				}
 				
             		}elseif($_POST["count"]<$oldcount){    //修改的ECN行数小于原来ECN明细表里的行数
@@ -341,9 +481,63 @@
 				//1，更新已有数据
 				for($i=1;$i<=$_POST["count"];$i++){
 					$item=$i;
+					if(isset($_POST["reason{$i}"])){
+						$reason=$_POST["reason{$i}"];
+					}
+					if(isset($_POST["description{$i}"])){
+						$description=$_POST["description{$i}"];
+					}
+					if(isset($_POST["act{$i}"])){
+						$act=$_POST["act{$i}"];
+					}
+					if(isset($_POST["partcode{$i}"])){
+						$partcode=$_POST["partcode{$i}"];
+					}
+
+					$bom_part=D();
+                                        $sql_bom_part="select num,refs,substitute from {$tablename} where partcode={$partcode};";
+                                        $result_bom_part=$bom_part->query($sql_bom_part,"select");
+
+					if(!empty($_POST["new_num{$i}"])){
+						$new_num=$_POST["new_num{$i}"];
+					}else{
+						if($result_bom_part){
+							$new_num=$result_bom_part[0]["num"];
+						}else{
+							p("BOM中没有找到此物料编码：{$partcode}");
+						}
+					}
+				
+					if(!empty($_POST["new_refs{$i}"])){
+						$new_refs=$_POST["new_refs{$i}"];
+					}else{
+                                                if($result_bom_part){
+                                                        $new_refs=$result_bom_part[0]["refs"];
+                                                }else{
+                                                        p("BOM中没有找到此物料编码：{$partcode}");
+                                                }
+                                        }
+					
+					if(!empty($_POST["new_substitute{$i}"])){
+						$new_substitute=$_POST["new_substitute{$i}"];
+					}else{
+                                                if($result_bom_part){
+                                                        $new_substitute=$result_bom_part[0]["substitute"];
+                                                }else{
+                                                        p("BOM中没有找到此物料编码：{$partcode}");
+                                                }
+                                        }
+					
+					if(isset($_POST["action_type{$i}"])){
+						$action_type=$_POST["action_type{$i}"];
+					}
+					if(isset($_POST["oldpart_dealing{$i}"])){
+						$oldpart_dealing=$_POST["oldpart_dealing{$i}"];
+					}
+					
 					//插入变更明细表数据
 					$ecndetail=D();					
-					$sql1='update '.$ecn_detail_tablename.' set item="'.$item.'",reason="'.$_POST["reason{$i}"].'",description="'.$_POST["description{$i}"].'",act="'.$_POST["act{$i}"].'",partcode="'.$_POST["partcode{$i}"].'",new_num="'.$_POST["new_num{$i}"].'",new_refs="'.$_POST["new_refs{$i}"].'",new_substitute="'.$_POST["new_substitute{$i}"].'",action_type="'.$_POST["action_type{$i}"].'",oldpart_dealing="'.$_POST["oldpart_dealing{$i}"].'"  where item="'.$item.'";';
+					$sql1='update '.$ecn_detail_tablename.' set item="'.$item.'",reason="'.$reason.'",description="'.$description.'",act="'.$act.'",partcode="'.$_POST["partcode{$i}"].'",new_num="'.$new_num.'",new_refs="'.$new_refs.'",new_substitute="'.$new_substitute.'",action_type="'.$action_type.'",oldpart_dealing="'.$oldpart_dealing.'"  where item="'.$item.'";';
 
 					//p($sql1);					
 					 $result1=$ecndetail->query($sql1,"update");               //插入数据
@@ -353,6 +547,18 @@
                         		}else{
                                 		p("在ECN明细表 {$ecn_detail_tablename} 中，没有修改第{$i}行数据！");
                         		}
+								
+					//修改所有ECN修改记录和修改明细表后，修改对应的BOM内容
+					$update_bom=D();
+					$sql_update_bom='update '.$tablename.' set num="'.$new_num.'",refs="'.$new_refs.'",substitute="'.$new_substitute.'"  where partcode="'.$partcode.'";';
+					p($sql_update_bom);	
+					$result_update_bom=$update_bom->query($sql_update_bom,"query");
+					if($result_update_bom){
+						p("依据ECN内容更新BOM的{$partcode}器件内容成功");
+					}else{
+						p("依据ECN内容更新BOM的{$partcode}器件内容失败");
+					}				
+				
 				}
 				//2，删除之前多余的行
 				for($i=$_POST["count"]+1;$i<=$oldcount;$i++){
