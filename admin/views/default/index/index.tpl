@@ -1,9 +1,9 @@
 <html>
 	<head>
-		<title>管理平台</title>
+		<title>BOM管理平台</title>
 	</head>
 
-	<frameset rows="110,*">
+	<frameset rows="100,*">
 		<frame src="<{$url}>/top" name="top">
 
 		<frameset cols="180,*">
