@@ -21,7 +21,7 @@
 		</tr>	
 	<{sectionelse}>
 		<tr>
-			<td colspan="5">没有变更记录</td>
+			<td colspan="6">没有变更记录</td>
 		</tr>
 	
 	<{/section}>
