@@ -134,15 +134,9 @@
 			}elseif(isset($_GET["bomcode"])){
 				$bomcode=$_GET["bomcode"];
 			}
-			
-			$ecn["bomcode"]=$bomcode;
-			
-			$bominfo=$bom->field("bomname,projectname,tablename,ecnrecord")->find($bomcode);
+			$bominfo=$bom->field("bomname,tablename,ecnrecord")->find($bomcode);
 			$ecnrectablename=$bominfo["ecnrecord"];
 			$bomname=$bominfo["bomname"];
-			$projectname=$bominfo["projectname"];
-			$ecn["bomname"]=$bomname;
-			$ecn["projectname"]=$projectname;
 			$tablename=$bominfo["tablename"];
 			//p($bomname);
 
@@ -152,8 +146,6 @@
 			//创建变更明细表
                         if($bom->createEcnDetailTable($ecn_detail_tablename)){
 				//p("创建变更明细表成功");
-				$ecn["ecn_detail_tablename"]=$ecn_detail_tablename;
-				
                                 $_POST["ecn_detail_tablename"]=$ecn_detail_tablename;
 				//执行插入变更明细表操作
 				for($i=1;$i<=$_POST["count"];$i++){
@@ -245,30 +237,15 @@
 			$tab=D();
 		
                         $sql='insert into '.$ecnrectablename.'(ecn_num,ecn_detail_tablename,description,ecntime) values("'.$_POST["ecn_num"].'","'.$_POST["ecn_detail_tablename"].'","'.$_POST["description"].'","'.$_POST["ecntime"].'");';
-			p($sql);
+			//p($sql);
                         $result=$tab->query($sql,"insert");               //插入数据
 			//p($result);
 			if($result){
-				//插入bro_all_ecn_detail_list表
-				$ecn["ecn_num"]=$_POST["ecn_num"];
-				$ecn["description"]=$_POST["description"];
-				$ecn["ecn_detail_tablename"]=$_POST["ecn_detail_tablename"];
-				$ecn["ctime"]=$_POST["ecntime"];
-
-                        	$all_ecn_detail=D("all_ecn_detail_list");
-                        	p($ecn);
-                        	$result=$all_ecn_detail->insert($ecn);
-                        	p($result);
-                        	if($result){
-                                	p("添加all_ecn_detail_list表成功！");
-                        	}else{
-                                	p("添加all_ecn_detail_list表失败！");
-                        	}
-
 				$this->success("添加ECN 记录进成功！",3,"ecnrecord/index/bomcode/{$bomcode}");
 			}else{
 				$this->error($tab->getMsg(),3,"ecnrecord/add");
 			}
+			
 			
                 }
                 function mod(){

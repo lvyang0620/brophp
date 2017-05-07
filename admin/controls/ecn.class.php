@@ -1,44 +1,7 @@
 <?php
-        class Ecnrecord {
+        class Ecn {
                 function index(){
-			//p($_GET);
-			if(isset($_GET["bomcode"])){			//从BOM信息表里进入查看该项目的ECN列表
-                        	$bomcode=$_GET["bomcode"];
-                        	//p($bomcode);
-                        	$bom=D("bominfo");
-
-                        	$bomitem=$bom->field("bomname,ecnrecord")->find($bomcode);
-                        	$bomname=$bomitem["bomname"];
-                        	$ecnrectablename=$bomitem["ecnrecord"];
-                        	//p($tablename);
-                        	$tab=D();
-                        	$sql="select count(1) from {$ecnrectablename};";
-                        	$total=$tab->query($sql,"total");               //获取总数
-                        	//p($total);
-                        	$page=new Page($total,10);                      //创建分页
-
-                        	$sql="select item,ecn_num,ecn_detail_tablename,description,ecntime,lastmodtime from {$ecnrectablename};";
-                        	$data=$tab->query($sql,"select");               //查询数据
-                        	//p($data);
-
-                        	$this->assign("bomcode",$bomcode);                    //分配数据
-                        	$this->assign("bomname",$bomname);                    //分配数据
-                        	$this->assign("data",$data);                    //分配数据
-                        	$this->assign("fpage",$page->fpage());
-				if(isset($_GET["ecn_detail_tablename"]) && isset($_GET["ecn_num"])){
-					$this->assign("ecn_num",$_GET["ecn_num"]);
-					$ecn_detail=D();
-					$ecn_detail_tablename=$_GET["ecn_detail_tablename"];
-					$sql2="select item,reason,description,act,partcode,new_num,new_refs,new_substitute,action_type,oldpart_dealing from {$ecn_detail_tablename};";
-					$ecn_detail_data=$ecn_detail->query($sql2,"select");
-					//p($ecn_detail_data);
-					$this->assign("ecn_detail_data",$ecn_detail_data);
-                        		$this->display("index_detail");
-
-				}else{
-                        		$this->display("index");
-				}
-			}else{				//从menu菜单进入查看ECN列表
+				//p($_GET);
                         	$pro=D("project");
                         	$projects=$pro->select();
                         	$this->assign("pro",$projects);			
@@ -47,13 +10,11 @@
                         	}else{
                                 	$pro_id=0;
                         	}
-	
                          	if($pro_id==0){
                                 	 $projectname["name"]="全部";                          //当前项目名为"全部"
                          	}else{
                                  	$projectname=$pro->field("name")->find($pro_id);         //设置当前项目名  
                          	}
-	
 				$this->assign("projectname",$projectname["name"]);
                         	$bom=D("bominfo");
                         	if($pro_id==0){
@@ -76,42 +37,38 @@
 				//p($bomname);
 				if($bomname){
 					//从当前项目的指定BOM中列出ECN DETAIL明细表
-                        		$bomitem=$bom->field("bomcode,tablename,ecnrecord")->where(array("bomname"=>$bomname))->select();
+                                	$all_ecn=D("all_ecn_detail_list");
+                                	$total=$all_ecn->total();               //获取总数
+                                	//p($total);
+                                	$page=new Page($total,10);                      //创建分页
+                        		$data=$all_ecn->where(array("bomname"=>$bomname))->select();
+                                	//p($data);
+				}elseif(isset($_GET["project_id"]) && $_GET["project_id"]!=0){
+					//从当前项目的所有BOM中列出所有的ECN DETAIL明细表
+                                	$all_ecn=D("all_ecn_detail_list");
+                                	$total=$all_ecn->total();               //获取总数
+                                	//p($total);
+                                	$page=new Page($total,10);                      //创建分页
+                        		//$data=$all_ecn->where("projectname"=>$projectname["name"])->select();
+                        		$data=$all_ecn->where(array("projectname"=>$projectname["name"]))->select();
+					//p($data);
+				
 				}else{
 					//从当前项目的所有BOM中列出所有的ECN DETAIL明细表
-                        		$bomitem=$bom->field("bomcode,tablename,ecnrecord")->select();
+                                	$all_ecn=D("all_ecn_detail_list");
+                                	$total=$all_ecn->total();               //获取总数
+                                	//p($total);
+                                	$page=new Page($total,10);                      //创建分页
+                        		$data=$all_ecn->select();
+					//p($data);
 				
 				}
-				//p($bomitem);
-                        	$bomcode=$bomitem[0]["bomcode"];
-                        	$tablename=$bomitem[0]["tablename"];
-                                //p($tablename);
-				if(isset($_GET["ecnrectablename"])){
-					$ecnrectablename=$_GET["ecnrectablename"];
-				}else{
-                                	$ecnrectablename=$bomitem[0]["ecnrecord"];
-				}
-                                //p($ecnrectablename);
-				$this->assign("ecnrectablename",$ecnrectablename);
-                                $tab=D();
-                                $sql="select count(1) from {$ecnrectablename};";
-                                $total=$tab->query($sql,"total");               //获取总数
-                                //p($total);
-                                $page=new Page($total,10);                      //创建分页
-
-                                $sql="select item,ecn_num,ecn_detail_tablename,description,ecntime,lastmodtime from {$ecnrectablename};";
-				//p($sql);
-                                $data=$tab->query($sql,"select");               //查询数据
-                                //p($data);
-                                $this->assign("bomcode",$bomcode);                    //分配数据
                                 $this->assign("bomname",$bomname);                    //分配数据
                                 $this->assign("data",$data);                    //分配数据
                                 $this->assign("fpage",$page->fpage());
-				$this->assign("bomname",$bomname);
 				$this->assign("pro_id",$pro_id);
 
-                        	$this->display("index_all");
-			}
+                        	$this->display();
                 }
 		
                 function add(){
@@ -134,15 +91,9 @@
 			}elseif(isset($_GET["bomcode"])){
 				$bomcode=$_GET["bomcode"];
 			}
-			
-			$ecn["bomcode"]=$bomcode;
-			
-			$bominfo=$bom->field("bomname,projectname,tablename,ecnrecord")->find($bomcode);
+			$bominfo=$bom->field("bomname,tablename,ecnrecord")->find($bomcode);
 			$ecnrectablename=$bominfo["ecnrecord"];
 			$bomname=$bominfo["bomname"];
-			$projectname=$bominfo["projectname"];
-			$ecn["bomname"]=$bomname;
-			$ecn["projectname"]=$projectname;
 			$tablename=$bominfo["tablename"];
 			//p($bomname);
 
@@ -152,8 +103,6 @@
 			//创建变更明细表
                         if($bom->createEcnDetailTable($ecn_detail_tablename)){
 				//p("创建变更明细表成功");
-				$ecn["ecn_detail_tablename"]=$ecn_detail_tablename;
-				
                                 $_POST["ecn_detail_tablename"]=$ecn_detail_tablename;
 				//执行插入变更明细表操作
 				for($i=1;$i<=$_POST["count"];$i++){
@@ -245,30 +194,15 @@
 			$tab=D();
 		
                         $sql='insert into '.$ecnrectablename.'(ecn_num,ecn_detail_tablename,description,ecntime) values("'.$_POST["ecn_num"].'","'.$_POST["ecn_detail_tablename"].'","'.$_POST["description"].'","'.$_POST["ecntime"].'");';
-			p($sql);
+			//p($sql);
                         $result=$tab->query($sql,"insert");               //插入数据
 			//p($result);
 			if($result){
-				//插入bro_all_ecn_detail_list表
-				$ecn["ecn_num"]=$_POST["ecn_num"];
-				$ecn["description"]=$_POST["description"];
-				$ecn["ecn_detail_tablename"]=$_POST["ecn_detail_tablename"];
-				$ecn["ctime"]=$_POST["ecntime"];
-
-                        	$all_ecn_detail=D("all_ecn_detail_list");
-                        	p($ecn);
-                        	$result=$all_ecn_detail->insert($ecn);
-                        	p($result);
-                        	if($result){
-                                	p("添加all_ecn_detail_list表成功！");
-                        	}else{
-                                	p("添加all_ecn_detail_list表失败！");
-                        	}
-
 				$this->success("添加ECN 记录进成功！",3,"ecnrecord/index/bomcode/{$bomcode}");
 			}else{
 				$this->error($tab->getMsg(),3,"ecnrecord/add");
 			}
+			
 			
                 }
                 function mod(){

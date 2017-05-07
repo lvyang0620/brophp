@@ -5,7 +5,7 @@
 		</ul>
 		<p></p>
 		<ul>
-			<li><a href="<{$app}>/ecnrecord" target="main">ECN管理</a></li>
+			<li><a href="<{$app}>/ecn" target="main">ECN管理</a></li>
 		</ul>
 	</li>
 	<li><h3>库存管理</h3>
