@@ -57,7 +57,7 @@
 		<td><{$data[ls].description}></td>
 		<td><{$data[ls].ctime|date_format:"%Y-%m-%d %H:%M:%S"}></td>
 		<td><{$data[ls].lastmodtime|date_format:"%Y-%m-%d %H:%M:%S"}></td>
-		<td><a href="<{$url}>/mod/bomcode/<{$data[ls].bomcode}>/ecn_item/<{$data[ls].item}>">修改</a>/<a onclick="return confirm('确定要删除<{$data[ls].ecn_num}>吗？')" href="<{$url}>/del/bomcode/<{$data[ls].bomcode}>/ecn_item/<{$data[ls].item}>//ecn_detail_tablename/<{$data[ls].ecn_detail_tablename}>">删除</a>/<a href="<{$url}>/index/bomcode/<{$data[ls].bomcode}>/ecn_num/<{$data[ls].ecn_num}>/ecn_detail_tablename/<{$data[ls].ecn_detail_tablename}>">明细</a></td>
+		<td><a href="<{$url}>/mod/bomcode/<{$data[ls].bomcode}>/ecn_item/<{$data[ls].ecn_item}>">修改</a>/<a onclick="return confirm('确定要删除<{$data[ls].ecn_num}>吗？')" href="<{$url}>/del/bomcode/<{$data[ls].bomcode}>/ecn_item/<{$data[ls].ecn_item}>//ecn_detail_tablename/<{$data[ls].ecn_detail_tablename}>">删除</a>/<a href="<{$url}>/index/bomcode/<{$data[ls].bomcode}>/ecn_num/<{$data[ls].ecn_num}>/ecn_detail_tablename/<{$data[ls].ecn_detail_tablename}>">明细</a></td>
 		</tr>	
 	<{sectionelse}>
 		<tr>

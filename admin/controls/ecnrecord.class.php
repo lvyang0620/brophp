@@ -250,6 +250,12 @@
 			//p($result);
 			if($result){
 				//插入bro_all_ecn_detail_list表
+				$ecn_rec=D();
+				$sql='select item from '.$ecnrectablename.' where ecn_num="'.$_POST['ecn_num'].'";';
+				//p($sql);				
+				$result_ecn_rec=$ecn_rec->query($sql,"select");
+				//p($result_ecn_rec);
+				$ecn["ecn_item"]=$result_ecn_rec[0]["item"];
 				$ecn["ecn_num"]=$_POST["ecn_num"];
 				$ecn["description"]=$_POST["description"];
 				$ecn["ecn_detail_tablename"]=$_POST["ecn_detail_tablename"];
