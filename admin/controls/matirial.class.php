@@ -173,6 +173,88 @@
 			}
 
                 }
+
+		function import(){
+			
+			$this->display();
+		}
+
+		function uploadEx(){
+			$mat=D("matirial");
+                        $filename=$mat->uploadExcel();
+                        if(!$filename){
+				p("上传文件失败");
+                        }else{
+				p("上传文件成功");
+				$this->redirect("matirial/importExcel/filename/{$filename}");
+                        }
+
+		}
+
+		function importExcel(){
+			p($_GET);	
+			
+    			header("content-type:text/html;charset=utf-8");
+    			//引入PHPExcel类
+    			//vendor('PHPExcel');
+    			//vendor('PHPExcel.IOFactory');
+    			//vendor('PHPExcel.Reader.Excel5');
+  
+    			//redirect传来的文件名
+    			$fileName = $_GET['filename'];
+			
+    			//文件路径
+			$filePath=PROJECT_PATH."/public/uploads/".$fileName;
+  			p($filePath);
+			
+    			//实例化PHPExcel类
+			require_once("PHPExcel.php");
+    			$PHPExcel = new PHPExcel();
+			
+    			//默认用excel2007读取excel，若格式不对，则用之前的版本进行读取
+    			$PHPReader = new PHPExcel_Reader_Excel2007();
+			
+    			if (!$PHPReader->canRead($filePath)) {
+      				$PHPReader = new PHPExcel_Reader_Excel5();
+      				if (!$PHPReader->canRead($filePath)) {
+        			p("no Excel'");
+        			return;
+      				}
+    			}
+  			/*
+    			//读取Excel文件
+    			$PHPExcel = $PHPReader->load($filePath);
+    			//读取excel文件中的第一个工作表
+    			$sheet = $PHPExcel->getSheet(0);
+    			//取得最大的列号
+    			$allColumn = $sheet->getHighestColumn();
+    			//取得最大的行号
+    			$allRow = $sheet->getHighestRow();
+    			//从第二行开始插入,第一行是列名
+    			for ($currentRow = 2; $currentRow <= $allRow; $currentRow++) {
+      			//获取B列的值
+      			$name = $PHPExcel->getActiveSheet()->getCell("B" . $currentRow)->getValue();
+      			//获取C列的值
+      			$price = $PHPExcel->getActiveSheet()->getCell("C" . $currentRow)->getValue();
+      			//获取D列的值
+      			$count = $PHPExcel->getActiveSheet()->getCell("D" . $currentRow)->getValue();
+  
+      			$m = M('Info');
+      			$num = $m->add(array('pName' => $name, 'pPrice' => $price, 'pCount' => $count));
+    			}
+    			if ($num > 0) {
+      				echo "添加成功！";
+    			} else {
+      			echo "添加失败！";
+    			}
+			*/			
+		}		
+
+
+		function export(){
+
+		}
+
                 function del(){
 			//p($_POST);
 			//p($_GET);

@@ -37,7 +37,7 @@
 					<input type="submit" value="删除">
 			</td>
 			<td align="center"><a href="<{$url}>/add">添加物料</a></td>
-			<td colspan="4" align="right"><{$fpage}></td>
+			<td colspan="3" align="right"><{$fpage}></td>
 			<td align="right">选择类别</td>
 			<td colspan="3">
 				<select name="category_id" onchange="window.location.href=this.options[selectedIndex].value" >
@@ -52,6 +52,10 @@
                   		</select>
 
 			</td>
+		</tr>
+		<tr>
+			<td align="center" colspan="2"><a href="<{$url}>/import">导入</a></td>
+			<td align="center"><a href="<{$url}>/export">导出</a></td>
 		</tr>
 
 	</form>

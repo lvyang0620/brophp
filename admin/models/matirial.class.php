@@ -14,4 +14,20 @@
 				return false;
 			}
 		}
+		
+		function uploadExcel(){
+                        $up=new FileUpload();
+                        $up->set("allowtype", array("xls", "xlsx", "csv"))
+                           ->set("maxsize", 30000000);
+
+                        if($up->upload("file")){
+                                return $up->getFileName();
+
+                        }else{
+                                $this->setMsg($up->getErrorMsg());
+                                return false;
+                        }
+                }
+
+
 	}

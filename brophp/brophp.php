@@ -130,6 +130,18 @@
 			include "PHPExcel/Style/NumberFormat.php";
 		}else if($className=="PHPExcel_Style_Protection"){
 			include "PHPExcel/Style/Protection.php";
+		}else if($className=="PHPExcel_Reader_Excel2007"){
+			include "PHPExcel/Reader/Excel2007.php";
+		}else if($className=="PHPExcel_Reader_Abstract"){
+			include "PHPExcel/Reader/Abstract.php";
+		}else if($className=="PHPExcel_Reader_IReader"){
+			include "PHPExcel/Reader/IReadFilter.php";
+		}else if($className=="PHPExcel_Reader_DefaultReadFilter"){
+			include "PHPExcel/Reader/DefaultReadFilter.php";
+		}else if($className=="PHPExcel_Reader_IReadFilter"){
+			include "PHPExcel/Reader/IReadFilter.php";
+		}else if($className=="PHPExcel_ReferenceHelper"){
+			include "PHPExcel/ReferenceHelper.php";
 		}else{                             //如果是其他类，将类名转为小写
 			//echo $className."<br>";
 			include strtolower($className).".class.php";	
