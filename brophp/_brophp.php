@@ -68,70 +68,8 @@
 			include "Smarty.class.php";
 		}else if($className=="PHPExcel_Shared_String"){
 			include "PHPExcel/Shared/String.php";
-		}else if($className=="PHPExcel_Calculation"){
-			include "PHPExcel/Calculation.php";
-		}else if($className=="PHPExcel_Calculation_Function"){
-                        include "PHPExcel/Calculation/Function.php";
-                }else if($className=="PHPExcel_CalcEngine_CyclicReferenceStack"){
-			include "PHPExcel/CalcEngine/CyclicReferenceStack.php";
-		}else if($className=="PHPExcel_CalcEngine_Logger"){
-			include "PHPExcel/CalcEngine/Logger.php";
-		}else if($className=="PHPExcel_Worksheet"){
-			include "PHPExcel/Worksheet.php";
-		}else if($className=="PHPExcel_IComparable"){
-			include "PHPExcel/IComparable.php";
-		}else if($className=="PHPExcel_CachedObjectStorageFactory"){
-			include "PHPExcel/CachedObjectStorageFactory.php";
-		}else if($className=="PHPExcel_CachedObjectStorage_Memory"){
-			include "PHPExcel/CachedObjectStorage/Memory.php";
-		}else if($className=="PHPExcel_CachedObjectStorage_CacheBase"){
-			include "PHPExcel/CachedObjectStorage/CacheBase.php";
-		}else if($className=="PHPExcel_CachedObjectStorage_ICache"){
-			include "PHPExcel/CachedObjectStorage/ICache.php";
-		}else if($className=="PHPExcel_Worksheet_PageSetup"){
-			include "PHPExcel/Worksheet/PageSetup.php";
-		}else if($className=="PHPExcel_Worksheet_PageMargins"){
-			include "PHPExcel/Worksheet/PageMargins.php";
-		}else if($className=="PHPExcel_Worksheet_HeaderFooter"){
-			include "PHPExcel/Worksheet/HeaderFooter.php";
-		}else if($className=="PHPExcel_Worksheet_SheetView"){
-			include "PHPExcel/Worksheet/SheetView.php";
-		}else if($className=="PHPExcel_Worksheet_Protection"){
-			include "PHPExcel/Worksheet/Protection.php";
-		}else if($className=="PHPExcel_Worksheet_Dimension"){
-                        include "PHPExcel/Worksheet/Dimension.php";
-                }else if($className=="PHPExcel_Worksheet_RowDimension"){
-			include "PHPExcel/Worksheet/RowDimension.php";
-		}else if($className=="PHPExcel_Worksheet_ColumnDimension"){
-			include "PHPExcel/Worksheet/ColumnDimension.php";
-		}else if($className=="PHPExcel_Worksheet_AutoFilter"){
-			include "PHPExcel/Worksheet/AutoFilter.php";
-		}else if($className=="PHPExcel_DocumentProperties"){
-			include "PHPExcel/DocumentProperties.php";
-		}else if($className=="PHPExcel_DocumentSecurity"){
-			include "PHPExcel/DocumentSecurity.php";
-		}else if($className=="PHPExcel_Style"){
-			include "PHPExcel/Style.php";
-		}else if($className=="PHPExcel_Style_Supervisor"){
-			include "PHPExcel/Style/Supervisor.php";
-		}else if($className=="PHPExcel_Style_Font"){
-			include "PHPExcel/Style/Font.php";
-		}else if($className=="PHPExcel_Style_Color"){
-			include "PHPExcel/Style/Color.php";
-		}else if($className=="PHPExcel_Style_Fill"){
-			include "PHPExcel/Style/Fill.php";
-		}else if($className=="PHPExcel_Style_Borders"){
-			include "PHPExcel/Style/Borders.php";
-		}else if($className=="PHPExcel_Style_Border"){
-                        include "PHPExcel/Style/Border.php";
-                }else if($className=="PHPExcel_Style_Alignment"){
-			include "PHPExcel/Style/Alignment.php";
-		}else if($className=="PHPExcel_Style_NumberFormat"){
-			include "PHPExcel/Style/NumberFormat.php";
-		}else if($className=="PHPExcel_Style_Protection"){
-			include "PHPExcel/Style/Protection.php";
 		}else{                             //如果是其他类，将类名转为小写
-			//echo $className."<br>";
+			echo $className."<br>";
 			include strtolower($className).".class.php";	
 		}
 		Debug::addmsg("<b> $className </b>类", 1);  //在debug中显示自动包含的类
